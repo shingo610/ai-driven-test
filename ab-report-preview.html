@@ -702,23 +702,28 @@
     function SlackMemberBlock({ member }) {
       return (
         <div className="rounded-lg border border-slate-800 bg-slate-900/70 px-2 py-1.5 sm:py-1">
-          <div className="mb-0.5 border-b border-slate-700 pb-1 text-sm font-bold leading-tight text-slate-50 sm:pb-0.5 sm:text-xs sm:leading-none">
-            {member.name}
+          <div className="flex gap-2">
+            <SlackTeamDonut rateStr={member.rate} />
+            <div className="min-w-0 flex-1">
+              <div className="mb-0.5 border-b border-slate-700 pb-1 text-sm font-bold leading-tight text-slate-50 sm:pb-0.5 sm:text-xs sm:leading-none">
+                {member.name}
+              </div>
+              <SlackMetricLine label="営業数値" value={member.es} />
+              <SlackMetricLine label="達成率" value={member.rate} valueClassName={rateToneClass(member.rate)} />
+              <SlackMetricLine
+                label="昨日からの営業進捗"
+                value={member.progress}
+                valueClassName={progressToneClass(member.progress, false)}
+              />
+              <SlackMetricLine label="SR件数(昨日)" value={member.reports} valueClassName={reportsToneClass(member.reports, false)} />
+              <SlackVerticalBarTriplet
+                rateStr={member.rate}
+                progressStr={member.progress}
+                reportsStr={member.reports}
+                isTeam={false}
+              />
+            </div>
           </div>
-          <SlackMetricLine label="営業数値" value={member.es} />
-          <SlackMetricLine label="達成率" value={member.rate} valueClassName={rateToneClass(member.rate)} />
-          <SlackMetricLine
-            label="昨日からの営業進捗"
-            value={member.progress}
-            valueClassName={progressToneClass(member.progress, false)}
-          />
-          <SlackMetricLine label="SR件数(昨日)" value={member.reports} valueClassName={reportsToneClass(member.reports, false)} />
-          <SlackVerticalBarTriplet
-            rateStr={member.rate}
-            progressStr={member.progress}
-            reportsStr={member.reports}
-            isTeam={false}
-          />
         </div>
       );
     }
