@@ -65,7 +65,7 @@
         practiceItems: [
           'ChatGPTの「slackレポート相談」で、構成・指標・文言のたたき台を相談した',
           'Cursor上で指示を重ね、スマホ幅への最適化を反映した',
-          '横棒グラフから縦棒3本へ整理し、4パターン比較を1画面に集約した',
+          '横棒グラフから縦棒（進捗・SR）2本へ整理し、4パターン比較を1画面に集約した',
           '「4日以上SR0件」「7日以上営業進捗不変」の抽出条件を追加した',
           '提出課題の並び（完成形→4パーツ→コツ）に合わせてページ構成を調整した',
         ],
@@ -555,25 +555,23 @@
       return { pct, fill };
     }
 
-    /** 達成率・進捗・件数の縦棒を横3列で並べる */
-    function SlackVerticalBarTriplet({ rateStr, progressStr, reportsStr, isTeam }) {
+    /** 昨日からの営業進捗・SR件数の縦棒を2本並べる（達成率はドーナツで表示） */
+    function SlackVerticalBarPair({ progressStr, reportsStr, isTeam }) {
       const barH = 34;
-      const barW = 11;
-      const pRate = Math.min(100, Math.max(0, parsePercent(rateStr)));
+      const barW = 12;
       const { pct: pProg, fill: fProg } = slackProgressPctFill(progressStr, isTeam);
       const { pct: pRep, fill: fRep } = slackReportsPctFill(reportsStr, isTeam);
       const cols = [
-        { key: 'rate', label: '達成', pct: pRate, fill: rateHex(rateStr) },
         { key: 'prog', label: '進捗', pct: pProg, fill: fProg },
         { key: 'rep', label: 'SR', pct: pRep, fill: fRep },
       ];
       return (
         <div
-          className="mt-1 flex items-end justify-between gap-1 border-t border-slate-800/80 pt-1.5"
+          className="mt-1 flex items-end justify-center gap-6 border-t border-slate-800/80 pt-1.5 sm:gap-4"
           aria-hidden="true"
         >
           {cols.map((c) => (
-            <div key={c.key} className="flex min-w-0 flex-1 flex-col items-center gap-0.5">
+            <div key={c.key} className="flex min-w-0 flex-col items-center gap-0.5">
               <div className="flex h-[36px] w-full items-end justify-center">
                 <SlackVerticalBarFill pct={c.pct} fill={c.fill} barW={barW} barH={barH} />
               </div>
@@ -716,8 +714,7 @@
                 valueClassName={progressToneClass(member.progress, false)}
               />
               <SlackMetricLine label="SR件数(昨日)" value={member.reports} valueClassName={reportsToneClass(member.reports, false)} />
-              <SlackVerticalBarTriplet
-                rateStr={member.rate}
+              <SlackVerticalBarPair
                 progressStr={member.progress}
                 reportsStr={member.reports}
                 isTeam={false}
@@ -750,8 +747,7 @@
                   valueClassName={progressToneClass(t.progress, true)}
                 />
                 <SlackMetricLine label="SR件数(昨日)" value={t.reports} valueClassName={reportsToneClass(t.reports, true)} />
-                <SlackVerticalBarTriplet
-                  rateStr={t.rate}
+                <SlackVerticalBarPair
                   progressStr={t.progress}
                   reportsStr={t.reports}
                   isTeam={true}
@@ -846,7 +842,7 @@
               taskTheme={1}
               badge="課題①（必須）"
               title="①完成イメージの図解（必須）"
-              description="slackに届く最終表示をスマホ幅で再現しています。流れ図・ドーナツ・縦棒3本、フォローが必要なメンバーの抽出まで含みます。"
+              description="slackに届く最終表示をスマホ幅で再現しています。流れ図・達成率ドーナツ・縦棒（進捗・SR）2本、フォローが必要なメンバーの抽出まで含みます。"
             >
               <SlackPreview data={slackSampleData} />
             </SectionCard>
