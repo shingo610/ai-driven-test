@@ -555,31 +555,45 @@
       return { pct, fill };
     }
 
-    /** 昨日からの営業進捗・SR件数の縦棒を2本並べる（達成率はドーナツで表示） */
-    function SlackVerticalBarPair({ progressStr, reportsStr, isTeam }) {
-      const barH = 34;
-      const barW = 12;
-      const { pct: pProg, fill: fProg } = slackProgressPctFill(progressStr, isTeam);
-      const { pct: pRep, fill: fRep } = slackReportsPctFill(reportsStr, isTeam);
-      const cols = [
-        { key: 'prog', label: '進捗', pct: pProg, fill: fProg },
-        { key: 'rep', label: 'SR', pct: pRep, fill: fRep },
-      ];
+    /** 達成率の数値の右に円グラフ */
+    function SlackRateRowWithDonut({ rateStr }) {
+      const tone = rateToneClass(rateStr);
       return (
-        <div
-          className="mt-1 flex items-end justify-center gap-6 border-t border-slate-800/80 pt-1.5 sm:gap-4"
-          aria-hidden="true"
-        >
-          {cols.map((c) => (
-            <div key={c.key} className="flex min-w-0 flex-col items-center gap-0.5">
-              <div className="flex h-[36px] w-full items-end justify-center">
-                <SlackVerticalBarFill pct={c.pct} fill={c.fill} barW={barW} barH={barH} />
-              </div>
-              <span className="text-[11px] font-semibold leading-none text-slate-500 sm:text-[9px] md:text-[10px]">
-                {c.label}
-              </span>
+        <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 py-1 sm:py-0.5">
+          <span className="max-w-[45%] shrink-0 text-xs leading-snug text-slate-400 sm:max-w-[52%] sm:text-[10px] sm:leading-tight">
+            達成率
+          </span>
+          <div className="flex min-w-0 items-center justify-end gap-1.5">
+            <span className={`shrink-0 text-right text-sm font-semibold leading-snug sm:text-[11px] ${tone}`}>
+              {rateStr}
+            </span>
+            <SlackTeamDonut rateStr={rateStr} />
+          </div>
+        </div>
+      );
+    }
+
+    /** 数値の右に縦棒（進捗 or SR） */
+    function SlackMetricLineWithBar({ label, value, valueClassName, pct, fill, barCaption }) {
+      const valueCls = valueClassName ? `font-semibold ${valueClassName}` : 'font-semibold text-slate-50';
+      const barH = 32;
+      const barW = 10;
+      return (
+        <div className="flex items-end justify-between gap-2 border-b border-slate-800/80 py-1 last:border-b-0 sm:gap-1.5 sm:py-0.5">
+          <span className="max-w-[48%] shrink-0 text-xs leading-snug text-slate-400 sm:max-w-[46%] sm:text-[10px] sm:leading-tight">
+            {label}
+          </span>
+          <div className="flex items-end gap-1.5">
+            <span
+              className={`max-w-[min(7.5rem,38vw)] text-right text-sm leading-snug break-all sm:max-w-[5.5rem] sm:text-[11px] sm:leading-tight ${valueCls}`}
+            >
+              {value}
+            </span>
+            <div className="flex flex-col items-center gap-0.5" aria-hidden="true">
+              <SlackVerticalBarFill pct={pct} fill={fill} barW={barW} barH={barH} />
+              <span className="text-[9px] font-semibold leading-none text-slate-500 sm:text-[8px]">{barCaption}</span>
             </div>
-          ))}
+          </div>
         </div>
       );
     }
@@ -698,29 +712,31 @@
     }
 
     function SlackMemberBlock({ member }) {
+      const progFill = slackProgressPctFill(member.progress, false);
+      const repFill = slackReportsPctFill(member.reports, false);
       return (
         <div className="rounded-lg border border-slate-800 bg-slate-900/70 px-2 py-1.5 sm:py-1">
-          <div className="flex gap-2">
-            <SlackTeamDonut rateStr={member.rate} />
-            <div className="min-w-0 flex-1">
-              <div className="mb-0.5 border-b border-slate-700 pb-1 text-sm font-bold leading-tight text-slate-50 sm:pb-0.5 sm:text-xs sm:leading-none">
-                {member.name}
-              </div>
-              <SlackMetricLine label="営業数値" value={member.es} />
-              <SlackMetricLine label="達成率" value={member.rate} valueClassName={rateToneClass(member.rate)} />
-              <SlackMetricLine
-                label="昨日からの営業進捗"
-                value={member.progress}
-                valueClassName={progressToneClass(member.progress, false)}
-              />
-              <SlackMetricLine label="SR件数(昨日)" value={member.reports} valueClassName={reportsToneClass(member.reports, false)} />
-              <SlackVerticalBarPair
-                progressStr={member.progress}
-                reportsStr={member.reports}
-                isTeam={false}
-              />
-            </div>
+          <div className="mb-0.5 border-b border-slate-700 pb-1 text-sm font-bold leading-tight text-slate-50 sm:pb-0.5 sm:text-xs sm:leading-none">
+            {member.name}
           </div>
+          <SlackMetricLine label="営業数値" value={member.es} />
+          <SlackRateRowWithDonut rateStr={member.rate} />
+          <SlackMetricLineWithBar
+            label="昨日からの営業進捗"
+            value={member.progress}
+            valueClassName={progressToneClass(member.progress, false)}
+            pct={progFill.pct}
+            fill={progFill.fill}
+            barCaption="進捗"
+          />
+          <SlackMetricLineWithBar
+            label="SR件数(昨日)"
+            value={member.reports}
+            valueClassName={reportsToneClass(member.reports, false)}
+            pct={repFill.pct}
+            fill={repFill.fill}
+            barCaption="SR"
+          />
         </div>
       );
     }
@@ -735,25 +751,23 @@
             【{data.date} 朝レポート】
           </div>
           <div className="mt-2 rounded-lg border border-slate-800 bg-slate-900/60 px-2 py-1.5 sm:py-1">
-            <div className="flex gap-2">
-              <SlackTeamDonut rateStr={t.rate} />
-              <div className="min-w-0 flex-1">
-                <div className="mb-1 text-xs font-bold text-sky-300 sm:mb-0.5 sm:text-[10px]">課全体</div>
-                <SlackMetricLine label="営業数値" value={t.es} />
-                <SlackMetricLine label="達成率" value={t.rate} valueClassName={rateToneClass(t.rate)} />
-                <SlackMetricLine
-                  label="昨日からの営業進捗"
-                  value={t.progress}
-                  valueClassName={progressToneClass(t.progress, true)}
-                />
-                <SlackMetricLine label="SR件数(昨日)" value={t.reports} valueClassName={reportsToneClass(t.reports, true)} />
-                <SlackVerticalBarPair
-                  progressStr={t.progress}
-                  reportsStr={t.reports}
-                  isTeam={true}
-                />
-              </div>
-            </div>
+            <div className="mb-1 text-xs font-bold text-sky-300 sm:mb-0.5 sm:text-[10px]">課全体</div>
+            <SlackMetricLine label="営業数値" value={t.es} />
+            <SlackRateRowWithDonut rateStr={t.rate} />
+            <SlackMetricLineWithBar
+              label="昨日からの営業進捗"
+              value={t.progress}
+              valueClassName={progressToneClass(t.progress, true)}
+              {...slackProgressPctFill(t.progress, true)}
+              barCaption="進捗"
+            />
+            <SlackMetricLineWithBar
+              label="SR件数(昨日)"
+              value={t.reports}
+              valueClassName={reportsToneClass(t.reports, true)}
+              {...slackReportsPctFill(t.reports, true)}
+              barCaption="SR"
+            />
           </div>
           <div className="mt-2 text-[10px] font-bold text-sky-300">個人別</div>
           <div className="mt-1 flex flex-col gap-1">
@@ -842,7 +856,7 @@
               taskTheme={1}
               badge="課題①（必須）"
               title="①完成イメージの図解（必須）"
-              description="slackに届く最終表示をスマホ幅で再現しています。流れ図・達成率ドーナツ・縦棒（進捗・SR）2本、フォローが必要なメンバーの抽出まで含みます。"
+              description="slackに届く最終表示をスマホ幅で再現しています。流れ図・各数値の右横に達成率ドーナツと進捗・SRの縦棒、フォローが必要なメンバーの抽出まで含みます。"
             >
               <SlackPreview data={slackSampleData} />
             </SectionCard>
