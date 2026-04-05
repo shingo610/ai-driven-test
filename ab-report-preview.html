@@ -534,8 +534,8 @@
       let pct = 0;
       let fill = '#64748b';
       if (v < 0) {
-        pct = 100;
-        fill = '#f87171';
+        pct = 0;
+        fill = '#64748b';
       } else {
         pct = Math.min(100, (v / cap) * 100);
         if (v <= (isTeam ? 5000 : 500)) fill = '#f87171';
