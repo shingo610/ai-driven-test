@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="page-revision" content="2026-04-05" />
+  <meta name="page-revision" content="2026-04-06" />
   <meta http-equiv="Cache-Control" content="no-cache" />
   <title>予算進捗自動slackレポート — プレビュー</title>
   <script src="https://cdn.tailwindcss.com"></script>
@@ -78,7 +78,7 @@
         practiceItems: [
           '達成率・昨日からの営業進捗・SR件数の色分けを `rateToneClass` / `progressToneClass` / `reportsToneClass` に集約した',
           '閾値（例：50%・500千円、課全体は10倍）をコードで固定した',
-          'メンバーに `consecutiveZeroReportDays` と `consecutiveNoAbProgressChangeDays` を持たせ、4日・7日以上でフォロー対象をリスト化する条件をプログラム側で判定した',
+          'メンバーに `consecutiveZeroReportDays`（SR0件の連続営業日数・土日祝除く）と `consecutiveNoAbProgressChangeDays` を持たせ、4日・7日以上でフォロー対象をリスト化する条件をプログラム側で判定した',
           '10名のサンプルで色パターンを網羅し、同じルールなら表示のブレが出ないようにした',
         ],
       },
@@ -573,8 +573,17 @@
       );
     }
 
+    /** SR0件連続日数の接尾辞（consecutiveZeroReportDays は土日・祝日を除く営業日ベースの集計結果を想定） */
+    function slackSrZeroStreakSuffix(reportsStr, consecutiveZeroReportDays) {
+      const n = parseInt(String(reportsStr).replace(/件/g, ''), 10);
+      if (Number.isNaN(n) || n !== 0) return null;
+      const days = consecutiveZeroReportDays ?? 0;
+      if (days < 1) return null;
+      return `※${days}日目連続`;
+    }
+
     /** 数値の右に縦棒（進捗 or SR） */
-    function SlackMetricLineWithBar({ label, value, valueClassName, pct, fill, barCaption }) {
+    function SlackMetricLineWithBar({ label, value, valueClassName, pct, fill, barCaption, valueSuffix }) {
       const valueCls = valueClassName ? `font-semibold ${valueClassName}` : 'font-semibold text-slate-50';
       const barH = 32;
       const barW = 10;
@@ -588,6 +597,11 @@
               className={`max-w-[min(7.5rem,38vw)] text-right text-sm leading-snug break-all sm:max-w-[5.5rem] sm:text-[11px] sm:leading-tight ${valueCls}`}
             >
               {value}
+              {valueSuffix ? (
+                <span className="ml-1 block text-[10px] font-normal leading-snug text-slate-400 sm:inline sm:text-[9px] sm:leading-tight">
+                  {valueSuffix}
+                </span>
+              ) : null}
             </span>
             <div className="flex flex-col items-center gap-0.5" aria-hidden="true">
               <SlackVerticalBarFill pct={pct} fill={fill} barW={barW} barH={barH} />
@@ -648,7 +662,7 @@
       );
     }
 
-    /** セールスレポートが4日以上連続0件のメンバー（consecutiveZeroReportDays は集計結果を想定） */
+    /** セールスレポートが4日以上連続0件のメンバー（consecutiveZeroReportDays は土日・祝日を除く営業日の集計結果を想定） */
     function SlackZeroReportStreakAlert({ members }) {
       const flagged = members.filter((m) => (m.consecutiveZeroReportDays ?? 0) >= 4);
       return (
@@ -714,6 +728,7 @@
     function SlackMemberBlock({ member }) {
       const progFill = slackProgressPctFill(member.progress, false);
       const repFill = slackReportsPctFill(member.reports, false);
+      const srStreak = slackSrZeroStreakSuffix(member.reports, member.consecutiveZeroReportDays);
       return (
         <div className="rounded-lg border border-slate-800 bg-slate-900/70 px-2 py-1.5 sm:py-1">
           <div className="mb-0.5 border-b border-slate-700 pb-1 text-sm font-bold leading-tight text-slate-50 sm:pb-0.5 sm:text-xs sm:leading-none">
@@ -736,6 +751,7 @@
             pct={repFill.pct}
             fill={repFill.fill}
             barCaption="SR"
+            valueSuffix={srStreak}
           />
         </div>
       );
@@ -743,6 +759,7 @@
 
     function SlackReportScroll({ data }) {
       const t = data.team;
+      const teamSrStreak = slackSrZeroStreakSuffix(t.reports, t.consecutiveZeroReportDays);
 
       return (
         <div className="h-[min(62vh,620px)] overflow-y-auto overscroll-y-contain px-3 py-2.5 font-sans sm:h-[min(58vh,580px)] sm:px-2.5 sm:py-2">
@@ -767,6 +784,7 @@
               valueClassName={reportsToneClass(t.reports, true)}
               {...slackReportsPctFill(t.reports, true)}
               barCaption="SR"
+              valueSuffix={teamSrStreak}
             />
           </div>
           <div className="mt-2 text-[10px] font-bold text-sky-300">個人別</div>
