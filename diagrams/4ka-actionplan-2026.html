@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026年度 営業四課 アクションプラン（図解）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --eigyo-gradient: linear-gradient(115deg, #0f766e, #0369a1);
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .header-gradient { background: var(--eigyo-gradient); }
+    .section-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .term-explain {
+      background: linear-gradient(135deg, #ecfeff 0%, #e0f2fe 100%);
+      border-left: 4px solid #0284c7;
+      padding: 1.25rem;
+      border-radius: 0.75rem;
+      margin: 1rem 0;
+    }
+    .term-word { color: #0369a1; }
+    .hinabubble {
+      position: relative;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      margin-left: 0.25rem;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+    }
+    .hinabubble::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #f59e0b transparent transparent;
+    }
+    .kachobubble {
+      position: relative;
+      padding: 1.25rem;
+      border-radius: 1rem;
+      margin-left: 0.25rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 2px solid #0284c7;
+    }
+    .kachobubble::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #0284c7 transparent transparent;
+    }
+    .badge-essential {
+      background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-recommended {
+      background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-optional {
+      background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .toc {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 50;
+      font-size: 0.875rem;
+      width: 15rem;
+    }
+    .toc a { color: #0369a1; text-decoration: none; display: block; padding: 0.25rem 0; }
+    .toc a:hover { text-decoration: underline; }
+    @media (max-width: 1280px) { .toc { display: none; } }
+  </style>
+</head>
+<body class="bg-slate-50">
+  <nav class="toc" aria-label="目次">
+    <div class="font-bold text-slate-700 mb-2">目次</div>
+    <a href="#today">今日やること</a>
+    <a href="#glossary">単語集</a>
+    <a href="#three">まず覚える3つ</a>
+    <a href="#numbers">数値目標</a>
+    <a href="#seg">セグメンテーション</a>
+    <a href="#sbu">SBU（8単位）</a>
+    <a href="#focus">重点マーケット</a>
+    <a href="#roles">役割分担</a>
+    <a href="#terms">用語</a>
+    <a href="#summary">まとめ</a>
+  </nav>
+
+  <header class="header-gradient text-white py-8">
+    <div class="max-w-5xl mx-auto px-4">
+      <div class="flex items-center gap-2 text-white/90 text-sm mb-2">
+        <i data-lucide="file-text" class="w-4 h-4"></i>
+        <span>PDF「2026年度 JTB名古屋事業部 アクションプラン（営業四課）」要約図解</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold">2026年度 営業四課 アクションプラン</h1>
+      <p class="mt-2 text-lg opacity-95">日次アクションダッシュボード（朝5分で判断する）</p>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-4 py-8">
+    <section id="today" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="list-checks" class="w-6 h-6 text-emerald-700"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">今日やること（5分で決める）</h2>
+          <p class="text-slate-500">チェックを付けて、今日の優先行動を確定する</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="flex items-center gap-2 font-bold text-slate-800">
+            <i data-lucide="sun" class="w-5 h-5 text-amber-600"></i>
+            <span>毎日（営業開始前）</span>
+          </div>
+          <div class="mt-3 space-y-3 text-slate-700">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" class="mt-1 h-4 w-4" data-check="daily-kpi">
+              <span><strong>KPIを見る</strong>：KGI/KPIのどれを今日追うか決める（下の「数値目標」へ）</span>
+            </label>
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" class="mt-1 h-4 w-4" data-check="daily-seg">
+              <span><strong>優先順位を切る</strong>：P/G/Cと省力/撤退の基準で、今日やる顧客を選ぶ</span>
+            </label>
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" class="mt-1 h-4 w-4" data-check="daily-next">
+              <span><strong>自分の最初の一手</strong>：電話1本／提案1通／社内依頼1件のどれを最初にやるか決める</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="flex items-center gap-2 font-bold text-slate-800">
+            <i data-lucide="calendar-check" class="w-5 h-5 text-sky-700"></i>
+            <span>週次・都度（該当するときだけ）</span>
+          </div>
+          <div class="mt-3 space-y-3 text-slate-700">
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" class="mt-1 h-4 w-4" data-check="weekly-diff">
+              <span><strong>差分を確認</strong>：進捗のズレ（達成/未達の理由）を1つだけ言語化する</span>
+            </label>
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" class="mt-1 h-4 w-4" data-check="event-escalate">
+              <span><strong>低評価/リスクは上長へ</strong>：CS低評価や契約条件の論点を早めに上げる</span>
+            </label>
+            <label class="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" class="mt-1 h-4 w-4" data-check="monthly-check">
+              <span><strong>月1の定点</strong>：重点2U（優取フルサービス／新規事業）の状況を更新する</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex items-start gap-2">
+        <i data-lucide="info" class="w-5 h-5 text-slate-500 flex-shrink-0 mt-0.5"></i>
+        <p class="text-slate-600">
+          これは「会議用の説明資料」ではなく、朝に<strong>判断して動く</strong>ための画面です。チェックが埋まったら、今日はもう読み返さなくてOK。
+        </p>
+      </div>
+    </section>
+
+    <section id="glossary" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="book-open-check" class="w-6 h-6 text-sky-800"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">単語集（略語・アルファベット）</h2>
+          <p class="text-slate-500">初見でも詰まらないように、ここだけ見れば追える</p>
+        </div>
+      </div>
+
+      <div class="mb-4 flex items-start gap-2">
+        <i data-lucide="search" class="w-5 h-5 text-slate-500 flex-shrink-0 mt-0.5"></i>
+        <div class="flex-1">
+          <label class="block text-sm font-semibold text-slate-700" for="glossaryFilter">検索（例：ES / DX / GL）</label>
+          <input id="glossaryFilter" type="text" class="mt-2 w-full rounded-lg border border-slate-200 px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-sky-200" placeholder="入力すると表が絞り込まれます">
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <table class="min-w-full text-sm" id="glossaryTable">
+          <thead class="bg-slate-100">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">表記</th>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">この資料での意味（かみ砕き）</th>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">日次での言い換え</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr class="bg-white glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">KGI / KPI</td>
+              <td class="px-4 py-3 text-slate-700">最終目標（KGI）と、日々追う指標（KPI）。</td>
+              <td class="px-4 py-3 text-slate-700">「今日はどの数字を改善する日？」</td>
+            </tr>
+            <tr class="bg-slate-50/80 glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">FY</td>
+              <td class="px-4 py-3 text-slate-700">年度（Fiscal Year）。例：FY26。</td>
+              <td class="px-4 py-3 text-slate-700">「今年度／来年度」</td>
+            </tr>
+            <tr class="bg-white glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">ES</td>
+              <td class="px-4 py-3 text-slate-700">ESは収入のこと（例：ES 60,000千円等）。</td>
+              <td class="px-4 py-3 text-slate-700">「この市場・案件で作る収入」</td>
+            </tr>
+            <tr class="bg-slate-50/80 glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">CS</td>
+              <td class="px-4 py-3 text-slate-700">顧客満足（アンケート）。低評価は上長対応と記載。</td>
+              <td class="px-4 py-3 text-slate-700">「まず火消しが必要か？」</td>
+            </tr>
+            <tr class="bg-white glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">DX</td>
+              <td class="px-4 py-3 text-slate-700">デジタル活用で生産性を上げる文脈で登場。</td>
+              <td class="px-4 py-3 text-slate-700">「手作業を減らす仕組みに寄せる」</td>
+            </tr>
+            <tr class="bg-slate-50/80 glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">SBU</td>
+              <td class="px-4 py-3 text-slate-700">戦略的事業単位。勝ち方を整理する“箱”。</td>
+              <td class="px-4 py-3 text-slate-700">「どの箱の案件として扱う？」</td>
+            </tr>
+            <tr class="bg-white glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">U（例：企画U）</td>
+              <td class="px-4 py-3 text-slate-700">社内のユニット／役割単位の呼び方として登場。</td>
+              <td class="px-4 py-3 text-slate-700">「どのチームに頼む？」</td>
+            </tr>
+            <tr class="bg-slate-50/80 glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">GL / VD</td>
+              <td class="px-4 py-3 text-slate-700">役割名として記載（マネジメント・差配の文脈）。</td>
+              <td class="px-4 py-3 text-slate-700">「判断が必要なら誰に上げる？」</td>
+            </tr>
+            <tr class="bg-white glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">IB / ME</td>
+              <td class="px-4 py-3 text-slate-700">重点マーケットや案件種別を表す略語として登場。</td>
+              <td class="px-4 py-3 text-slate-700">「この案件の型（分類）は？」</td>
+            </tr>
+            <tr class="bg-slate-50/80 glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">AP（例：1stAP / 2ndAP）</td>
+              <td class="px-4 py-3 text-slate-700">アクションプランの節目（更新版）として登場。</td>
+              <td class="px-4 py-3 text-slate-700">「この月に見直す版」</td>
+            </tr>
+            <tr class="bg-white glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">TGT</td>
+              <td class="px-4 py-3 text-slate-700">ターゲット設定の略として登場（4月）。</td>
+              <td class="px-4 py-3 text-slate-700">「狙う顧客・市場を決める」</td>
+            </tr>
+            <tr class="bg-slate-50/80 glossary-row">
+              <td class="px-4 py-3 font-semibold text-slate-800">1,000千円</td>
+              <td class="px-4 py-3 text-slate-700">“優先する線引き”として資料内に記載（以上/未満）。</td>
+              <td class="px-4 py-3 text-slate-700">「優先ライン（太客ライン）」</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-xs text-slate-500 mt-3">
+        ※略語の正式定義が社内標準に依存するもの（IB/ME/GL/VD 等）は、貴社の言い回しに合わせて追記すると運用しやすいです。
+      </p>
+    </section>
+
+    <section id="intro" class="section-card scroll-mt-8">
+      <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+        <i data-lucide="message-circle" class="w-6 h-6 text-teal-600"></i>
+        導入（朝の迷いを減らす）
+      </h2>
+      <div class="rounded-xl border border-slate-200 bg-white p-5 text-slate-700 leading-relaxed">
+        <p>
+          このダッシュボードは、<strong>数字（ゴール）→ 優先順位（やる/やらない）→ 担当（誰が動くか）</strong>の順に並べています。
+        </p>
+        <p class="mt-2">
+          朝は上から順に確認し、最後に「役割分担」で<strong>自分の最初の一手</strong>を決めてください。
+        </p>
+      </div>
+    </section>
+
+    <section id="three" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-teal-600 to-sky-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="star" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">まず覚える3つ</h2>
+          <p class="text-slate-500">会議前に、ここだけ押さえる</p>
+        </div>
+      </div>
+
+      <div class="grid gap-4">
+        <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-xl border-l-4 border-red-500">
+          <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-bold text-lg text-slate-800">KGI/KPI（今年の“測り方”）</span>
+              <span class="badge-essential">必須</span>
+            </div>
+            <p class="text-slate-700">
+              2026年度の目標は<strong>営業収入 354,200千円</strong>。\n
+              主要KPIは「@営業要員生産性 39,355千円」「1,000千円以上 顧客ES構成比 90.0%」「貢献利益率 79.0%」。
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl border-l-4 border-sky-500">
+          <div class="w-10 h-10 bg-sky-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-bold text-lg text-slate-800">セグメンテーション（やる/やらない）</span>
+              <span class="badge-recommended">推奨</span>
+            </div>
+            <p class="text-slate-700">
+              「視点を案件からお客様へ」。<strong>P/G/C</strong>などの基準で優先順位を切り、\n
+              <strong>省力</strong>（競合無・訪問原則禁止）／<strong>撤退</strong>（未所属・費用対効果低）も明確にする。
+            </p>
+          </div>
+        </div>
+
+        <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl border-l-4 border-slate-400">
+          <div class="w-10 h-10 bg-slate-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-bold text-lg text-slate-800">“重点2U”＋月1定点</span>
+              <span class="badge-optional">確認</span>
+            </div>
+            <p class="text-slate-700">
+              8つの戦略的単位（SBU）の中でも<strong>優取へのフルサービスU</strong>と<strong>新規事業創出</strong>を重点に。\n
+              4月TGT設定→4-5月勉強会→6月2ndAP→以降<strong>月1回</strong>の定点チェック。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="numbers" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="target" class="w-6 h-6 text-teal-700"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">数値目標（見える化）</h2>
+          <p class="text-slate-500">“何を達成したいか”を数字で揃える</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-4">
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="text-sm text-slate-500 flex items-center gap-2">
+            <i data-lucide="flag" class="w-4 h-4"></i><span>KGI（2026）</span>
+          </div>
+          <div class="text-2xl font-bold text-slate-800 mt-2">営業収入 354,200千円</div>
+          <div class="text-sm text-slate-600 mt-1">（団体 339,000千円／その他 15,200千円）</div>
+        </div>
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="text-sm text-slate-500 flex items-center gap-2">
+            <i data-lucide="gauge" class="w-4 h-4"></i><span>KPI（例）</span>
+          </div>
+          <div class="mt-2 space-y-2 text-slate-700">
+            <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span>@営業要員生産性 39,355千円</span></div>
+            <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span>1,000千円以上 顧客ES構成比 90.0%</span></div>
+            <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span>貢献利益率 79.0%</span></div>
+          </div>
+        </div>
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="text-sm text-slate-500 flex items-center gap-2">
+            <i data-lucide="trending-up" class="w-4 h-4"></i><span>次年度団体クリア率（計画）</span>
+          </div>
+          <div class="text-2xl font-bold text-slate-800 mt-2">70%</div>
+          <div class="text-sm text-slate-600 mt-1">（2027年度 先行クリア率 30→70%へ）</div>
+        </div>
+      </div>
+
+      <div class="mt-8 overflow-x-auto rounded-xl border border-slate-200">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-100">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">月</th>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">営業収入進捗（千円）</th>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">クリア率</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr class="bg-white">
+              <td class="px-4 py-3">4月</td><td class="px-4 py-3">265,650</td><td class="px-4 py-3">75.0%</td>
+            </tr>
+            <tr class="bg-slate-50/80">
+              <td class="px-4 py-3">6月</td><td class="px-4 py-3">290,444</td><td class="px-4 py-3">82.5%</td>
+            </tr>
+            <tr class="bg-white">
+              <td class="px-4 py-3">9月</td><td class="px-4 py-3">318,780</td><td class="px-4 py-3">90.0%</td>
+            </tr>
+            <tr class="bg-slate-50/80">
+              <td class="px-4 py-3">12月</td><td class="px-4 py-3">345,345</td><td class="px-4 py-3">97.5%</td>
+            </tr>
+            <tr class="bg-white">
+              <td class="px-4 py-3">1月</td><td class="px-4 py-3">354,200</td><td class="px-4 py-3">100%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="text-xs text-slate-500 mt-2">※表はPDFに記載の一部（抜粋）です。</p>
+    </section>
+
+    <section id="seg" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="filter" class="w-6 h-6 text-amber-800"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">戦略的セグメンテーション（優先順位）</h2>
+          <p class="text-slate-500">「どこからいくら稼ぐか」を描き続ける</p>
+        </div>
+      </div>
+
+      <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl border border-amber-200">
+        <div class="flex items-center gap-2 mb-2">
+          <i data-lucide="map-pin" class="w-6 h-6 text-amber-700"></i>
+          <span class="font-bold text-amber-900">たとえ話：行程表の「寄り道」を決める</span>
+        </div>
+        <p class="text-slate-700">
+          同じ1日でも、全員で全部は回れません。<strong>優先して寄る場所（P/G/C）</strong>と、\n
+          <strong>今日は寄らない場所（省力/撤退）</strong>を決めるのがセグメンテーションです。
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4 mt-6">
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="award" class="w-5 h-5 text-teal-700"></i><span>P / G / C（例）</span>
+          </div>
+          <ul class="mt-3 space-y-2 text-slate-700">
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span><strong>P</strong>: JTB優位、1企業複数案件</span></li>
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span><strong>G</strong>: 競合有無可、白地開拓</span></li>
+            <li class="flex gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span><strong>C</strong>: 中部優良企業、人脈フック拡大</span></li>
+          </ul>
+          <p class="text-sm text-slate-600 mt-4">※「1,000千円以上/1企業」を上位、未満を下位として扱う記載あり。</p>
+        </div>
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="ban" class="w-5 h-5 text-rose-600"></i><span>省力 / 撤退（やらないこと）</span>
+          </div>
+          <ul class="mt-3 space-y-2 text-slate-700">
+            <li class="flex gap-2"><i data-lucide="alert-circle" class="w-4 h-4 text-rose-600 mt-1"></i><span><strong>省力</strong>: 競合無、訪問原則禁止</span></li>
+            <li class="flex gap-2"><i data-lucide="alert-circle" class="w-4 h-4 text-rose-600 mt-1"></i><span><strong>撤退</strong>: 未所属かつ費用対効果低</span></li>
+          </ul>
+          <p class="text-sm text-slate-600 mt-4">“やらない”を決めると、重点に時間が戻ります。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="sbu" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="layers" class="w-6 h-6 text-sky-800"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">戦略的事業単位（SBU）</h2>
+          <p class="text-slate-500">8つの単位を定義し、重点2Uに集中</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-2 gap-4">
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="sparkles" class="w-5 h-5 text-sky-700"></i>
+            <div class="font-bold text-slate-800">重点2U</div>
+          </div>
+          <div class="space-y-2 text-slate-700">
+            <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span><strong>優取へのフルサービスU</strong></span></div>
+            <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-teal-600 mt-1"></i><span><strong>新規事業創出</strong>（事業モデル明確化／撤退基準／アジャイル）</span></div>
+          </div>
+          <div class="mt-4 text-sm text-slate-600">
+            4月TGT設定・登録情報確認 → 4-5月勉強会 → 6月2ndAP → 以降月1回定点チェック
+          </div>
+        </div>
+
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="font-bold text-slate-800 mb-2 flex items-center gap-2">
+            <i data-lucide="list" class="w-5 h-5 text-slate-700"></i><span>8単位（PDF記載）</span>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-2 text-slate-700">
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">コーポレートIB</div>
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">総務系：EVP・HRC</div>
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">総務系：左記外</div>
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">プロモーション</div>
+            <div class="p-3 rounded-lg bg-slate-50 border border-slate-200">新規事業</div>
+          </div>
+          <p class="text-xs text-slate-500 mt-3">※PDFには「8つの戦略的単位」とあるため、上記は記載の一部を抜粋。</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="focus" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-violet-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="compass" class="w-6 h-6 text-violet-800"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">重点マーケット（抜粋）</h2>
+          <p class="text-slate-500">「どこで勝つか」を具体名で持つ</p>
+        </div>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-4">
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="trophy" class="w-5 h-5 text-violet-700"></i><span>特定大会</span>
+          </div>
+          <p class="text-slate-700 mt-2">提供価値最大化（PM×組成×アライアンス×仕入×契約条件）。</p>
+          <div class="mt-3 text-sm text-slate-600">
+            FY26: アジア・アジアパラ（警察）<br>
+            FY27: JC世界大会
+          </div>
+          <div class="mt-3 text-sm text-slate-700">
+            KPI: 完全斡旋／ES 40,000千円（見込 ES 20,000千円）
+          </div>
+        </div>
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="graduation-cap" class="w-5 h-5 text-sky-700"></i><span>教育・社会奉仕・宗教</span>
+          </div>
+          <p class="text-slate-700 mt-2">既存集中＋高価格挑戦。周年・地元開催ME注視。</p>
+          <div class="mt-3 text-sm text-slate-700">
+            KPI: 課特定MKT ES 60,000千円<br>
+            （教育 30,000／宗教 20,000／社奉 16,000）
+          </div>
+        </div>
+        <div class="p-5 rounded-xl border border-slate-200 bg-white">
+          <div class="font-bold text-slate-800 flex items-center gap-2">
+            <i data-lucide="lightbulb" class="w-5 h-5 text-amber-700"></i><span>企画U（価値創造）</span>
+          </div>
+          <p class="text-slate-700 mt-2">顧客起点の企画・提案価値最大化／支援機能／インサイドセールス復活。</p>
+          <div class="mt-3 text-sm text-slate-700">KPI: 運営MTG 月1回1H／インサイド起点案件創出 30社</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="roles" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="users" class="w-6 h-6 text-slate-700"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">役割分担（“自分の矢印”を引く）</h2>
+          <p class="text-slate-500">PDFの記載を、行動の単位に切り出す</p>
+        </div>
+      </div>
+
+      <div class="mb-4 flex items-start gap-2">
+        <i data-lucide="info" class="w-5 h-5 text-sky-600 flex-shrink-0 mt-0.5"></i>
+        <p class="text-slate-600">
+          この表は「誰が何を担うか」を<strong>最小限</strong>に整理したものです。ここに、自分のToDo（例：毎週の差分確認）を追記して使ってください。
+        </p>
+      </div>
+
+      <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-100">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">役割</th>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">主な責務（要約）</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr class="bg-white">
+              <td class="px-4 py-3 font-semibold text-slate-800">営業課長</td>
+              <td class="px-4 py-3 text-slate-700">個所APと連動し、課全体のナレッジを蓄積・学び・活用。メンバーが期待を超える価値提供をできるよう推進。</td>
+            </tr>
+            <tr class="bg-slate-50/80">
+              <td class="px-4 py-3 font-semibold text-slate-800">担当課長</td>
+              <td class="px-4 py-3 text-slate-700">営業活動の効果とES最大化／専門性・マネジメント力向上／マルチタスク化。</td>
+            </tr>
+            <tr class="bg-white">
+              <td class="px-4 py-3 font-semibold text-slate-800">GL</td>
+              <td class="px-4 py-3 text-slate-700">マネジメント力・推進力の強化。</td>
+            </tr>
+            <tr class="bg-slate-50/80">
+              <td class="px-4 py-3 font-semibold text-slate-800">社員（営業）</td>
+              <td class="px-4 py-3 text-slate-700">基礎力向上／素早く継続的なインプット＆アウトプット。</td>
+            </tr>
+            <tr class="bg-white">
+              <td class="px-4 py-3 font-semibold text-slate-800">社員（企画U）</td>
+              <td class="px-4 py-3 text-slate-700">基礎力向上／主体的な事業活動。海外案件習得・事務局機能高度化など。</td>
+            </tr>
+            <tr class="bg-slate-50/80">
+              <td class="px-4 py-3 font-semibold text-slate-800">VD</td>
+              <td class="px-4 py-3 text-slate-700">営業活動効果とES最大化／企画U機能向上／営業⇔企画U⇔各Uの差配。</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-6 rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-slate-700">
+        <div class="font-semibold text-emerald-800 mb-1">日次アクション例</div>
+        <p>
+          まず「省力/撤退」に当たる顧客が混ざっていないかを確認し、次に
+          <strong>1,000千円以上の構成比</strong>に効く案件を優先します。
+        </p>
+      </div>
+    </section>
+
+    <section id="terms" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="book-open" class="w-6 h-6 text-sky-800"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">用語（読みやすくする）</h2>
+          <p class="text-slate-500">略語は“行動”に言い換える</p>
+        </div>
+      </div>
+
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="lightbulb" class="w-7 h-7 text-sky-600 flex-shrink-0 mt-1"></i>
+          <div>
+            <div class="term-word text-lg font-bold">ES（この資料では）</div>
+            <div class="text-slate-700 mt-1">
+              ESは<strong>収入</strong>のことです（例：ES 67,800千円、ES 60,000千円など）。\n
+              このダッシュボードでは、<strong>「どの案件・市場で収入を作るか」</strong>として読み、担当の行動に落とします。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="lightbulb" class="w-7 h-7 text-sky-600 flex-shrink-0 mt-1"></i>
+          <div>
+            <div class="term-word text-lg font-bold">CSアンケート</div>
+            <div class="text-slate-700 mt-1">
+              満足度・継続・紹介の向上を狙う指標。\n
+              低評価は上長対応、と明記されています。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="lightbulb" class="w-7 h-7 text-sky-600 flex-shrink-0 mt-1"></i>
+          <div>
+            <div class="term-word text-lg font-bold">ME / IB / SBU</div>
+            <div class="text-slate-700 mt-1">
+              この資料では、特定マーケットや戦略単位を表す略語として登場します。\n
+              図解では「<strong>どの箱（単位）で勝つか</strong>」のラベルとして扱います。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="text-xs text-slate-500 mt-2">※略語の正式な定義が社内標準に依存する場合は、ここを貴社用語に合わせて更新してください。</p>
+    </section>
+
+    <section id="summary" class="section-card scroll-mt-8">
+      <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-7 h-7 text-teal-600"></i>
+        まとめ（次にやること）
+      </h2>
+      <ol class="space-y-3 text-slate-700 list-decimal list-inside">
+        <li><strong>目標の数字</strong>を自分の週次の見方に落とす（どのKPIを毎週見るか決める）</li>
+        <li><strong>セグメンテーション</strong>で「やる/やらない」を決め、重点に時間を戻す</li>
+        <li><strong>役割分担</strong>の表に、自分のToDoを1行追記して次回会議へ持ってくる</li>
+      </ol>
+
+      <div class="mt-6 rounded-xl border border-sky-200 bg-sky-50 p-4 text-slate-700">
+        <div class="font-semibold text-sky-800 mb-1">運用ルール</div>
+        <p>
+          「読むだけ」で終わらせないため、毎朝この画面で
+          <strong>担当の次アクションを1つ確定</strong>してから業務を開始します。
+        </p>
+      </div>
+    </section>
+
+    <p class="text-center text-sm text-slate-400 pb-8">
+      図解生成: diagram-eigyo-actionplan の型に準拠 · 出典: 提示PDF（抜粋・要約）
+    </p>
+  </main>
+
+  <script>
+    lucide.createIcons();
+
+    const STORAGE_KEY = '4ka-actionplan-daily-checks:v1';
+    const inputs = Array.from(document.querySelectorAll('input[data-check]'));
+    const saved = (() => {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); }
+      catch { return {}; }
+    })();
+
+    for (const el of inputs) {
+      const key = el.getAttribute('data-check');
+      el.checked = Boolean(saved[key]);
+      el.addEventListener('change', () => {
+        saved[key] = el.checked;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(saved));
+      });
+    }
+
+    const glossaryFilter = document.getElementById('glossaryFilter');
+    const glossaryRows = Array.from(document.querySelectorAll('#glossaryTable .glossary-row'));
+    if (glossaryFilter) {
+      glossaryFilter.addEventListener('input', () => {
+        const q = (glossaryFilter.value || '').trim().toLowerCase();
+        for (const row of glossaryRows) {
+          const text = row.textContent?.toLowerCase() || '';
+          row.style.display = q === '' || text.includes(q) ? '' : 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

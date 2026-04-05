@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>次年度営業アクションプラン（サンプル図解）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --eigyo-gradient: linear-gradient(115deg, #0f766e, #0369a1);
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .header-gradient { background: var(--eigyo-gradient); }
+    .section-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .term-explain {
+      background: linear-gradient(135deg, #ecfeff 0%, #e0f2fe 100%);
+      border-left: 4px solid #0284c7;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .term-word { color: #0369a1; }
+    .hinabubble {
+      position: relative;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-left: 0.25rem;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+      border: 2px solid #f59e0b;
+    }
+    .hinabubble::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #f59e0b transparent transparent;
+    }
+    .kachobubble {
+      position: relative;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-left: 0.25rem;
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      border: 2px solid #0284c7;
+    }
+    .kachobubble::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #0284c7 transparent transparent;
+    }
+    .badge-essential {
+      background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    .badge-recommended {
+      background: linear-gradient(135deg, #0369a1 0%, #0ea5e9 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    .badge-optional {
+      background: linear-gradient(135deg, #64748b 0%, #94a3b8 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+    .toc {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 50;
+      font-size: 0.875rem;
+    }
+    .toc a { color: #0369a1; text-decoration: none; display: block; padding: 0.25rem 0; }
+    .toc a:hover { text-decoration: underline; }
+    @media (max-width: 1280px) {
+      .toc { display: none; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50">
+  <nav class="toc" aria-label="目次">
+    <div class="font-bold text-slate-700 mb-2">目次</div>
+    <a href="#intro">導入</a>
+    <a href="#roadmap">年間の旅路</a>
+    <a href="#three">まず覚える3つ</a>
+    <a href="#terms">用語</a>
+    <a href="#metaphor">たとえ話</a>
+    <a href="#matrix">担当の見取り図</a>
+    <a href="#summary">まとめ</a>
+  </nav>
+
+  <header class="header-gradient text-white py-8">
+    <div class="max-w-4xl mx-auto px-4">
+      <div class="flex items-center gap-2 text-white/90 text-sm mb-2">
+        <i data-lucide="plane" class="w-4 h-4"></i>
+        <span>旅行会社・営業課｜デモ資料（架空の数値）</span>
+      </div>
+      <h1 class="text-3xl md:text-4xl font-bold">次年度 営業アクションプラン</h1>
+      <p class="mt-2 text-lg opacity-95">図解サマリー｜課員向け（営業・営業支援）</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <div id="intro" class="section-card scroll-mt-8">
+      <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+        <i data-lucide="message-circle" class="w-6 h-6 text-teal-600"></i>
+        まずここから
+      </h2>
+      <div class="flex items-start gap-4 mb-6">
+        <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-amber-800"></i>
+        </div>
+        <div class="hinabubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-amber-800">ヒナ（新人営業）:</span><br>
+            文章だけのプランだと、自分の担当がどこに当たるか拾いにくいです…。
+          </p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 mb-6">
+        <div class="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-sky-800"></i>
+        </div>
+        <div class="kachobubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-sky-800">課長:</span><br>
+            このページは<strong>行程表</strong>のつもりで読んでください。上から「いつ・何が・誰の仕事か」がつながるように並べています。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="roadmap" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="map" class="w-6 h-6 text-teal-700"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">年間の旅路（ロードマップ）</h2>
+          <p class="text-slate-500">四半期ごとの「到着地点」のイメージ</p>
+        </div>
+      </div>
+      <div class="flex flex-col md:flex-row items-stretch justify-center gap-3 my-4">
+        <div class="bg-teal-50 border border-teal-200 rounded-xl p-4 flex-1 text-center">
+          <i data-lucide="calendar" class="w-8 h-8 text-teal-700 mx-auto mb-2"></i>
+          <div class="font-bold text-teal-900">Q1</div>
+          <p class="text-sm text-slate-600 mt-1">既存顧客リストの棚卸し・優先順位づけ</p>
+        </div>
+        <i data-lucide="arrow-right" class="w-8 h-8 text-slate-400 hidden md:block self-center"></i>
+        <i data-lucide="arrow-down" class="w-8 h-8 text-slate-400 md:hidden self-center"></i>
+        <div class="bg-sky-50 border border-sky-200 rounded-xl p-4 flex-1 text-center">
+          <i data-lucide="calendar" class="w-8 h-8 text-sky-700 mx-auto mb-2"></i>
+          <div class="font-bold text-sky-900">Q2</div>
+          <p class="text-sm text-slate-600 mt-1">提案パターンの型化（繁忙期前の準備）</p>
+        </div>
+        <i data-lucide="arrow-right" class="w-8 h-8 text-slate-400 hidden md:block self-center"></i>
+        <i data-lucide="arrow-down" class="w-8 h-8 text-slate-400 md:hidden self-center"></i>
+        <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-4 flex-1 text-center">
+          <i data-lucide="calendar" class="w-8 h-8 text-indigo-700 mx-auto mb-2"></i>
+          <div class="font-bold text-indigo-900">Q3</div>
+          <p class="text-sm text-slate-600 mt-1">繁忙期オペの徹底・日次での差分確認</p>
+        </div>
+        <i data-lucide="arrow-right" class="w-8 h-8 text-slate-400 hidden md:block self-center"></i>
+        <i data-lucide="arrow-down" class="w-8 h-8 text-slate-400 md:hidden self-center"></i>
+        <div class="bg-violet-50 border border-violet-200 rounded-xl p-4 flex-1 text-center">
+          <i data-lucide="calendar" class="w-8 h-8 text-violet-700 mx-auto mb-2"></i>
+          <div class="font-bold text-violet-900">Q4</div>
+          <p class="text-sm text-slate-600 mt-1">リピート施策の振り返り・次年度に繋ぐ</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="three" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-teal-600 to-sky-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="star" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">まず覚える3つ</h2>
+          <p class="text-slate-500">会議前にこれだけ押さえればOK</p>
+        </div>
+      </div>
+      <div class="grid gap-4">
+        <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-red-50 to-orange-50 rounded-xl border-l-4 border-red-500">
+          <div class="w-10 h-10 bg-red-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">1</div>
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-bold text-lg text-slate-800">今年いちばん見る数字</span>
+              <span class="badge-essential">必須</span>
+            </div>
+            <p class="text-slate-600">例：<strong>既存顧客リピート件数</strong>（前年比 +8% を目安に日次で差分を見る）</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-sky-50 to-blue-50 rounded-xl border-l-4 border-sky-500">
+          <div class="w-10 h-10 bg-sky-600 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">2</div>
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-bold text-lg text-slate-800">繁忙期の「レーン」</span>
+              <span class="badge-recommended">推奨</span>
+            </div>
+            <p class="text-slate-600">予約集中期は<strong>優先順位を決めないと全員が待たされる</strong>。先に回す顧客セグメントを課で共有。</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-4 p-4 bg-gradient-to-r from-slate-50 to-slate-100 rounded-xl border-l-4 border-slate-400">
+          <div class="w-10 h-10 bg-slate-500 text-white rounded-full flex items-center justify-center font-bold flex-shrink-0">3</div>
+          <div>
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <span class="font-bold text-lg text-slate-800">窓口と舞台裏の線引き</span>
+              <span class="badge-optional">確認</span>
+            </div>
+            <p class="text-slate-600">お客様への約束（営業）と、資料・連絡の準備（営業支援）の<strong>切り分け</strong>を各自メモに写す。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="terms" class="section-card scroll-mt-8">
+      <h2 class="text-2xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+        <i data-lucide="book-open" class="w-7 h-7 text-sky-600"></i>
+        用語の整理
+      </h2>
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="lightbulb" class="w-8 h-8 text-sky-600 flex-shrink-0"></i>
+          <div>
+            <div class="term-word text-xl font-bold">「KPI」とは？</div>
+            <div class="text-lg mt-2 text-slate-700">
+              目標に対して<strong>今どのくらい達成できているか</strong>を測る指標です。このプランでは「売上だけでなく、件数・成約率・リピート」のどれを週次で見るかをセットで決めます。
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="lightbulb" class="w-8 h-8 text-sky-600 flex-shrink-0"></i>
+          <div>
+            <div class="term-word text-xl font-bold">「繁忙期」とは？</div>
+            <div class="text-lg mt-2 text-slate-700">
+              予約や問い合わせが集中する時期のことです。チェックインカウンターのように、<strong>レーン（優先順位）を決めないと滞留</strong>します。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="metaphor" class="section-card scroll-mt-8">
+      <h2 class="text-2xl font-bold text-slate-800 mb-6">たとえ話（3つ）</h2>
+      <div class="space-y-4">
+        <div class="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-xl border border-amber-200">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="map-pin" class="w-6 h-6 text-amber-700"></i>
+            <span class="font-bold text-amber-900">行程表</span>
+          </div>
+          <p class="text-slate-700">プランは<strong>お客様への行程表</strong>と同じ。目的地（成果）・日付（期限）・集合場所（担当）が揃っていないと現場で迷子になります。</p>
+        </div>
+        <div class="bg-gradient-to-r from-sky-50 to-blue-50 p-6 rounded-xl border border-sky-200">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="building-2" class="w-6 h-6 text-sky-700"></i>
+            <span class="font-bold text-sky-900">カウンターと舞台裏</span>
+          </div>
+          <p class="text-slate-700">営業は<strong>窓口の約束</strong>、支援は<strong>舞台裏の準備</strong>。表と裏が噛み合うかを図で見ます。</p>
+        </div>
+        <div class="bg-gradient-to-r from-violet-50 to-purple-50 p-6 rounded-xl border border-violet-200">
+          <div class="flex items-center gap-2 mb-2">
+            <i data-lucide="git-branch" class="w-6 h-6 text-violet-700"></i>
+            <span class="font-bold text-violet-900">空港のレーン分け</span>
+          </div>
+          <p class="text-slate-700">混雑期は<strong>全員同じ順番に並ぶと遅延</strong>するため、セグメントごとに優先レーンを決めます。</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="matrix" class="section-card scroll-mt-8">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center">
+          <i data-lucide="users" class="w-6 h-6 text-slate-700"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">担当の見取り図</h2>
+          <p class="text-slate-500">誰が窓口で、誰が下支えするか</p>
+        </div>
+      </div>
+      <div class="mb-4 flex items-start gap-2">
+        <i data-lucide="info" class="w-5 h-5 text-sky-600 flex-shrink-0 mt-0.5"></i>
+        <p class="text-slate-600">この表は<strong>主担当</strong>と<strong>支援で揃えるもの</strong>の目安です。実際の案件はエスカレーションルールに従ってください。</p>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-slate-200">
+        <table class="min-w-full text-sm">
+          <thead class="bg-slate-100">
+            <tr>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">施策</th>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">主担当</th>
+              <th class="px-4 py-3 text-left font-semibold text-slate-700">営業支援</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr class="bg-white">
+              <td class="px-4 py-3">既存顧客フォロー</td>
+              <td class="px-4 py-3">営業（架電・訪問・提案）</td>
+              <td class="px-4 py-3">リスト整備・メールテンプレ</td>
+            </tr>
+            <tr class="bg-slate-50/80">
+              <td class="px-4 py-3">繁忙期オペ</td>
+              <td class="px-4 py-3">営業（受付・即時提案）</td>
+              <td class="px-4 py-3">在庫確認・予約手配の下支え</td>
+            </tr>
+            <tr class="bg-white">
+              <td class="px-4 py-3">振り返り・数値共有</td>
+              <td class="px-4 py-3">全員（週次ミーティング）</td>
+              <td class="px-4 py-3">集計レポート作成</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flex items-start gap-4 mt-8">
+        <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-amber-800"></i>
+        </div>
+        <div class="hinabubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-amber-800">ヒナ:</span><br>
+            四半期ごとの「到着地点」と、この表を合わせれば、自分のToDoが見えてきました。
+          </p>
+        </div>
+      </div>
+      <div class="flex items-start gap-4 mt-4">
+        <div class="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-sky-800"></i>
+        </div>
+        <div class="kachobubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-sky-800">課長:</span><br>
+            各自、顧客リストに<strong>「自分の矢印」</strong>を1本書き足してください。次回会議ではそこから話を始めます。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div id="summary" class="section-card scroll-mt-8">
+      <h2 class="text-2xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+        <i data-lucide="check-circle" class="w-7 h-7 text-teal-600"></i>
+        まとめ
+      </h2>
+      <ul class="space-y-3 text-slate-700">
+        <li class="flex gap-2">
+          <i data-lucide="check" class="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5"></i>
+          <span><strong>数字の柱</strong>と<strong>四半期の到着地点</strong>をセットで覚える</span>
+        </li>
+        <li class="flex gap-2">
+          <i data-lucide="check" class="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5"></i>
+          <span><strong>担当表</strong>で自分の役割を確認し、顧客リストに写す</span>
+        </li>
+        <li class="flex gap-2">
+          <i data-lucide="check" class="w-5 h-5 text-teal-600 flex-shrink-0 mt-0.5"></i>
+          <span>混雑期は<strong>優先レーン</strong>を課で共有する</span>
+        </li>
+      </ul>
+      <div class="flex items-start gap-4 mt-8">
+        <div class="w-14 h-14 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-amber-800"></i>
+        </div>
+        <div class="hinabubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-amber-800">ヒナ:</span><br>
+            私はまず<strong>担当エリアのリピート候補</strong>に印をつけて、月曜の架電リストを作ります。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center text-sm text-slate-400 pb-8">
+      サンプル図解 · diagram-eigyo-actionplan スキル準拠 · 数値・施策は架空です
+    </p>
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

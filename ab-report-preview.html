@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>予算進捗自動slackレポート — プレビュー</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body { font-family: 'Noto Sans JP', system-ui, sans-serif; }
+    .four-parts-bar {
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { Fragment } = React;
+
+    const flowSteps = [
+      { number: '01', title: 'トリガー', body: '毎朝8時', illustration: 'clock' },
+      { number: '02', title: 'ソース元', body: 'Salesforce内のデータ', illustration: 'salesforce' },
+      {
+        number: '03',
+        title: '処理する場所',
+        body: 'Salesforceデータを集計し、課全体・個人別の実績、達成率、前日比、セールスレポート件数を算出する場所',
+        illustration: 'pc',
+      },
+      { number: '04', title: '届ける先', body: 'Slackの課専用チャネル', illustration: 'slack' },
+    ];
+
+    const metricItems = [
+      '営業数値',
+      '達成率',
+      '昨日からの営業進捗',
+      '昨日入力されたセールスレポート件数',
+    ];
+
+    const presentationTips = [
+      {
+        num: 2,
+        title: '専門家に磨かせる',
+        intro:
+          '作ったものをサブエージェント（親エージェントの部下）にレビューさせましょう。人と同じように、他人にレビューさせることで品質が上がります。',
+        practiceItems: [
+          'ChatGPTの「slackレポート相談」で、構成・指標・文言のたたき台を相談した',
+          'Cursor上で指示を重ね、スマホ幅への最適化を反映した',
+          '横棒グラフから縦棒3本へ整理し、4パターン比較を1画面に集約した',
+          '「4日以上SR0件」「7日以上営業進捗不変」の抽出条件を追加した',
+          '提出課題の並び（完成形→4パーツ→コツ）に合わせてページ構成を調整した',
+        ],
+      },
+      {
+        num: 3,
+        title: 'ブレをコードで止める',
+        intro:
+          'プログラムを使ってAIをサポートしましょう。「チェック（バリデーション）」「型にはめる」「余計な仕事を引き受ける」の3つがポイントです。',
+        practiceItems: [
+          '達成率・昨日からの営業進捗・SR件数の色分けを `rateToneClass` / `progressToneClass` / `reportsToneClass` に集約した',
+          '閾値（例：50%・500千円、課全体は10倍）をコードで固定した',
+          'メンバーに `consecutiveZeroReportDays` と `consecutiveNoAbProgressChangeDays` を持たせ、4日・7日以上でフォロー対象をリスト化する条件をプログラム側で判定した',
+          '10名のサンプルで色パターンを網羅し、同じルールなら表示のブレが出ないようにした',
+        ],
+      },
+    ];
+
+    /** ChatGPT「slackレポート相談」共有スレの流れ（提出用の要約） */
+    const chatgptConsultationSummaryItems = [
+      'テーマを「予算進捗の自動slackレポート」に絞り、課全体・個人別の指標と、毎朝の投稿で伝えたい内容の骨子を言語化した。',
+      '完成イメージを最優先にし、スマホ幅・数値の色分け・図解（流れ・ドーナツ・縦棒）やフォロー対象の出し方を、対話で何度か試しながら固めた。',
+      '「4日以上セールスレポート0件」「7日以上営業進捗が変わらない」など、要フォローの条件を決め、サンプル人数・数値で表示イメージを確認した。',
+      '提出課題の構成（①完成形の図解→②4パーツ→③3つのコツ）に合わせて、ページ上の見出し順も整理した。',
+    ];
+
+    /** Slack色分け検証用: 10名で達成率・進捗・件数それぞれ赤/黄/緑が揃う例。課全体は10倍閾値で3色が分かれる例。 */
+    const slackSampleData = {
+      date: '4/4',
+      team: {
+        es: '32,800千円',
+        rate: '44.0%',
+        progress: '+9,200千円',
+        reports: '60件',
+      },
+      members: [
+        {
+          name: '山田',
+          es: '2,800千円',
+          rate: '42.0%',
+          progress: '+300千円',
+          reports: '0件',
+          consecutiveZeroReportDays: 6,
+          consecutiveNoAbProgressChangeDays: 2,
+        },
+        {
+          name: '佐藤',
+          es: '2,600千円',
+          rate: '48.5%',
+          progress: '+500千円',
+          reports: '3件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 0,
+        },
+        {
+          name: '田中',
+          es: '3,000千円',
+          rate: '50.0%',
+          progress: '+750千円',
+          reports: '6件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 8,
+        },
+        {
+          name: '鈴木',
+          es: '2,400千円',
+          rate: '63.2%',
+          progress: '+150千円',
+          reports: '0件',
+          consecutiveZeroReportDays: 4,
+          consecutiveNoAbProgressChangeDays: 1,
+        },
+        {
+          name: '高橋',
+          es: '3,300千円',
+          rate: '71.0%',
+          progress: '+900千円',
+          reports: '4件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 7,
+        },
+        {
+          name: '伊藤',
+          es: '3,900千円',
+          rate: '88.4%',
+          progress: '+1,200千円',
+          reports: '9件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 0,
+        },
+        {
+          name: '渡辺',
+          es: '3,100千円',
+          rate: '100.0%',
+          progress: '+400千円',
+          reports: '1件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 10,
+        },
+        {
+          name: '山本',
+          es: '3,500千円',
+          rate: '100.0%',
+          progress: '+950千円',
+          reports: '5件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 0,
+        },
+        {
+          name: '中村',
+          es: '4,200千円',
+          rate: '100.0%',
+          progress: '+2,500千円',
+          reports: '27件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 0,
+        },
+        {
+          name: '小林',
+          es: '2,700千円',
+          rate: '59.0%',
+          progress: '-200千円',
+          reports: '5件',
+          consecutiveZeroReportDays: 0,
+          consecutiveNoAbProgressChangeDays: 3,
+        },
+      ],
+    };
+
+    /** 4パーツ用（時計・PCはSVG、ソース元・届け先は文字表示） */
+    function FourPartIllustration({ type, label }) {
+      const box = 'h-[140px] w-full md:h-[168px]';
+      const bg = 'bg-gradient-to-b from-sky-50 to-white';
+
+      if (type === 'clock') {
+        const cx = 100;
+        const cy = 82;
+        const r = 48;
+        const ticks = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((h) => {
+          const ang = ((h / 12) * 360 - 90) * (Math.PI / 180);
+          const x1 = cx + (r - 4) * Math.cos(ang);
+          const y1 = cy + (r - 4) * Math.sin(ang);
+          const x2 = cx + r * Math.cos(ang);
+          const y2 = cy + r * Math.sin(ang);
+          return <line key={h} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#64748b" strokeWidth="2" strokeLinecap="round" />;
+        });
+        const hAng = ((8 / 12) * 360 - 90) * (Math.PI / 180);
+        const hx2 = cx + 22 * Math.cos(hAng);
+        const hy2 = cy + 22 * Math.sin(hAng);
+        const mAng = ((0 / 12) * 360 - 90) * (Math.PI / 180);
+        const mx2 = cx + 32 * Math.cos(mAng);
+        const my2 = cy + 32 * Math.sin(mAng);
+        return (
+          <div className={`${box} ${bg} flex items-center justify-center p-4`} role="img" aria-label={label}>
+            <svg viewBox="0 0 200 160" className="h-full w-full max-w-[200px]" aria-hidden="true">
+              <circle cx={cx} cy={cy} r={r} fill="#ffffff" stroke="#38bdf8" strokeWidth="3" />
+              {ticks}
+              <circle cx={cx} cy={cy} r="4" fill="#1e40af" />
+              <line x1={cx} y1={cy} x2={hx2} y2={hy2} stroke="#1e40af" strokeWidth="4" strokeLinecap="round" />
+              <line x1={cx} y1={cy} x2={mx2} y2={my2} stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" />
+              <text
+                x="100"
+                y="138"
+                textAnchor="middle"
+                fontSize="11"
+                fill="#0369a1"
+                fontWeight="600"
+                fontFamily="Noto Sans JP, system-ui, sans-serif"
+              >
+                8:00
+              </text>
+            </svg>
+          </div>
+        );
+      }
+
+      if (type === 'salesforce') {
+        return (
+          <div className={`${box} ${bg} flex items-center justify-center px-4 py-6`}>
+            <span className="text-center text-xl font-bold tracking-tight text-sky-600 md:text-2xl">Salesforce</span>
+          </div>
+        );
+      }
+
+      if (type === 'pc') {
+        return (
+          <div className={`${box} ${bg} flex items-center justify-center p-3`} role="img" aria-label={label}>
+            <svg viewBox="0 0 200 160" className="h-full w-full max-w-[220px]" aria-hidden="true">
+              <path d="M 44 118 L 156 118 L 152 128 L 48 128 Z" fill="#cbd5e1" stroke="#94a3b8" strokeWidth="1.5" />
+              <rect x="40" y="36" width="120" height="78" rx="6" fill="#e2e8f0" stroke="#38bdf8" strokeWidth="2.5" />
+              <rect x="48" y="44" width="104" height="58" rx="3" fill="#f0f9ff" stroke="#7dd3fc" strokeWidth="1.5" />
+              <rect x="54" y="52" width="44" height="6" rx="2" fill="#bae6fd" />
+              <rect x="54" y="64" width="92" height="4" rx="1" fill="#e0f2fe" />
+              <rect x="54" y="74" width="72" height="4" rx="1" fill="#e0f2fe" />
+              <rect x="54" y="84" width="80" height="4" rx="1" fill="#e0f2fe" />
+              <rect x="88" y="118" width="24" height="10" rx="2" fill="#94a3b8" />
+            </svg>
+          </div>
+        );
+      }
+
+      if (type === 'slack') {
+        return (
+          <div className={`${box} ${bg} flex items-center justify-center px-4 py-6`}>
+            <span className="text-center text-xl font-bold tracking-tight text-slate-700 md:text-2xl">slack</span>
+          </div>
+        );
+      }
+
+      return null;
+    }
+
+    const illustrationLabels = {
+      clock: '時計のイラスト（毎朝8時）',
+      salesforce: 'Salesforce の文字',
+      pc: 'パソコン（ノートPC）のイラスト',
+      slack: 'slack の文字',
+    };
+
+    /** 提出課題①②③の色分け（スクロール先の目印用） */
+    const TASK_THEME = {
+      1: {
+        badge:
+          'inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900 ring-1 ring-emerald-300/90',
+        cardBorder: 'border-emerald-200/80',
+        panelBg: 'from-emerald-100 via-emerald-50 to-emerald-100/90',
+        title: 'text-emerald-950',
+        desc: 'text-emerald-900/70',
+      },
+      2: {
+        badge:
+          'inline-flex rounded-full bg-sky-50 px-3 py-1 text-xs font-semibold text-sky-950 ring-1 ring-sky-300/90',
+        cardBorder: 'border-sky-200/80',
+        title: 'text-blue-800',
+        subtitle: 'text-blue-900/70',
+        panelBg: 'from-sky-100 via-sky-50 to-sky-100/90',
+        bar: 'bg-sky-600',
+        footerBar: 'bg-sky-950',
+      },
+      3: {
+        badge:
+          'inline-flex rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-900 ring-1 ring-violet-300/90',
+        cardBorder: 'border-violet-200/80',
+        panelBg: 'from-violet-100 via-violet-50 to-violet-100/90',
+        title: 'text-violet-950',
+        desc: 'text-violet-900/70',
+      },
+    };
+
+    function SectionCard({ title, description, children, badge, taskTheme }) {
+      const t = taskTheme != null ? TASK_THEME[taskTheme] : null;
+      const borderClass = t?.cardBorder ?? 'border-slate-200';
+      const titleClass = t?.title ?? '';
+      const badgeClass = t?.badge;
+      const panelBg = t?.panelBg;
+      const descClass = t?.desc ?? 'text-slate-600';
+      const sectionSurface = panelBg
+        ? `overflow-hidden border bg-gradient-to-b shadow-sm ${borderClass} ${panelBg}`
+        : `rounded-3xl bg-white border shadow-sm ${borderClass}`;
+
+      return (
+        <section className={`${sectionSurface} ${panelBg ? 'rounded-3xl p-8' : 'p-8'}`}>
+          <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
+            <div>
+              {badge && badgeClass ? <div className={badgeClass}>{badge}</div> : null}
+              <h2
+                className={['text-2xl', 'font-bold', badge ? 'mt-3' : '', titleClass].filter(Boolean).join(' ')}
+              >
+                {title}
+              </h2>
+              {description ? <p className={`mt-2 ${descClass}`}>{description}</p> : null}
+            </div>
+          </div>
+          <div className="mt-6">{children}</div>
+        </section>
+      );
+    }
+
+    function FourPartColumn({ step, index }) {
+      const hasSub = Boolean(step.sub);
+      const subtitle = hasSub ? step.sub : step.body;
+      const detailBody = hasSub ? step.body : null;
+      const primaryBodyClass =
+        'w-full text-center text-sm font-semibold leading-snug text-slate-900 md:text-[15px]';
+
+      return (
+        <div className="flex h-full min-h-0 flex-col items-center px-1 text-center md:px-2">
+          <div
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-slate-800 text-lg font-bold text-white shadow-md md:h-14 md:w-14 md:text-xl"
+            aria-hidden
+          >
+            {index}
+          </div>
+          <div className="four-parts-bar mt-4 w-full max-w-[220px] shrink-0 rounded-md bg-sky-600 px-3 py-2.5 text-sm font-bold text-white md:max-w-none md:text-base">
+            {step.title}
+          </div>
+          <div className="mt-3 flex w-full max-w-[220px] flex-1 flex-col justify-start md:max-w-none">
+            <p className={primaryBodyClass}>{subtitle}</p>
+          </div>
+          <div className="mt-4 w-full max-w-[200px] shrink-0 overflow-hidden rounded-2xl border border-sky-200/90 shadow-sm md:max-w-none">
+            <FourPartIllustration type={step.illustration} label={illustrationLabels[step.illustration]} />
+          </div>
+          {detailBody ? (
+            <p className="mt-3 w-full text-left text-xs leading-relaxed text-slate-600 md:text-[13px]">
+              {detailBody}
+            </p>
+          ) : null}
+        </div>
+      );
+    }
+
+    function FourPartsInfographic() {
+      const th = TASK_THEME[2];
+      return (
+        <section
+          className={`overflow-hidden rounded-3xl border bg-gradient-to-b p-6 shadow-sm md:p-10 ${th.cardBorder} ${th.panelBg}`}
+        >
+          <div className={th.badge}>課題②（任意）</div>
+          <h2 className={`mt-3 text-xl font-bold tracking-tight md:text-3xl ${th.title}`}>2 4つのパーツに分類</h2>
+          <p className={`mt-2 text-sm md:text-base ${th.subtitle}`}>
+            自動化ツールを「トリガー・ソース元・処理する場所・届ける先」に整理した図解です。
+          </p>
+          <div className="mt-8 grid grid-cols-1 items-stretch gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-8">
+            {flowSteps.map((step, i) => (
+              <FourPartColumn key={step.number} step={step} index={i + 1} />
+            ))}
+          </div>
+          <div
+            className={`mt-10 rounded-lg px-4 py-3.5 text-center text-xs font-medium text-white md:text-sm ${th.footerBar}`}
+          >
+            トリガー・ソース元・処理する場所・届ける先
+          </div>
+        </section>
+      );
+    }
+
+    function MetricList({ title, items }) {
+      return (
+        <div className="rounded-2xl bg-slate-50 p-6">
+          <h3 className="text-lg font-semibold">{title}</h3>
+          <ul className="mt-4 space-y-3 text-slate-700">
+            {items.map((item) => (
+              <li key={item} className="flex gap-3">
+                <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-slate-400" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      );
+    }
+
+    function ProcessFlow() {
+      const nodes = [
+        { title: 'Salesforce', subtitle: '案件・ES・レポートデータ' },
+        { title: '集計処理', subtitle: '数値整理 / 達成率計算' },
+        { title: 'Slack', subtitle: '課専用チャネルへ配信' },
+      ];
+
+      return (
+        <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">
+          {nodes.map((node, index) => (
+            <Fragment key={node.title}>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center">
+                <div className="text-lg font-bold">{node.title}</div>
+                <div className="mt-2 text-sm leading-6 text-slate-600">{node.subtitle}</div>
+              </div>
+              {index < nodes.length - 1 ? (
+                <div className="hidden md:flex items-center justify-center text-2xl text-slate-400">→</div>
+              ) : null}
+            </Fragment>
+          ))}
+        </div>
+      );
+    }
+
+    function parsePercent(rateStr) {
+      return parseFloat(String(rateStr).replace(/%/g, '')) || 0;
+    }
+
+    /** 達成率: 50%以下=赤、50%超〜100%未満=黄、100%=緑 */
+    function rateToneClass(rateStr) {
+      const n = parsePercent(rateStr);
+      if (n <= 50) return 'text-red-400';
+      if (n < 100) return 'text-amber-300';
+      return 'text-emerald-400';
+    }
+
+    /** 千円単位の数値（+1,200千円 / -300千円） */
+    function parseProgressSenen(str) {
+      const s = String(str).trim();
+      const neg = /^[-−]/.test(s);
+      const num = s
+        .replace(/^[-+−]/, '')
+        .replace(/,/g, '')
+        .replace(/千円/g, '')
+        .trim();
+      const v = parseFloat(num) || 0;
+      return neg ? -v : v;
+    }
+
+    /**
+     * 昨日からの営業進捗（千円）
+     * 個人: マイナス or 500以下=赤、500超〜1000以下=黄、1000超=緑
+     * 課全体: 閾値10倍（5000 / 10000）
+     */
+    function progressToneClass(progressStr, isTeam) {
+      const v = parseProgressSenen(progressStr);
+      const redMax = isTeam ? 5000 : 500;
+      const yellowMax = isTeam ? 10000 : 1000;
+      if (v < 0 || v <= redMax) return 'text-red-400';
+      if (v <= yellowMax) return 'text-amber-300';
+      return 'text-emerald-400';
+    }
+
+    /**
+     * セールスレポート件数
+     * 個人: 0=赤、1〜5=黄、6以上=緑
+     * 課全体: 0=赤、1〜50=黄、60以上=緑（5件・6件の10倍）
+     */
+    function reportsToneClass(reportsStr, isTeam) {
+      const n = parseInt(String(reportsStr).replace(/件/g, ''), 10);
+      const count = Number.isFinite(n) ? n : 0;
+      const yellowMax = isTeam ? 50 : 5;
+      const greenMin = isTeam ? 60 : 6;
+      if (count === 0) return 'text-red-400';
+      if (count < greenMin) return 'text-amber-300';
+      return 'text-emerald-400';
+    }
+
+    function rateHex(rateStr) {
+      const n = parsePercent(rateStr);
+      if (n <= 50) return '#f87171';
+      if (n < 100) return '#fcd34d';
+      return '#34d399';
+    }
+
+    function SlackVerticalBarFill({ pct, fill, barW = 12, barH = 36 }) {
+      const p = Math.min(100, Math.max(0, pct));
+      const bh = (p / 100) * barH;
+      const y = barH - bh;
+      return (
+        <svg width={barW} height={barH} viewBox={`0 0 ${barW} ${barH}`} className="shrink-0 rounded-sm">
+          <rect x="0" y="0" width={barW} height={barH} fill="#334155" rx="2" />
+          <rect x="0" y={y} width={barW} height={bh} fill={fill} rx="2" />
+        </svg>
+      );
+    }
+
+    function slackProgressPctFill(progressStr, isTeam) {
+      const v = parseProgressSenen(progressStr);
+      const cap = isTeam ? 12000 : 1200;
+      let pct = 0;
+      let fill = '#64748b';
+      if (v < 0) {
+        pct = 100;
+        fill = '#f87171';
+      } else {
+        pct = Math.min(100, (v / cap) * 100);
+        if (v <= (isTeam ? 5000 : 500)) fill = '#f87171';
+        else if (v <= (isTeam ? 10000 : 1000)) fill = '#fcd34d';
+        else fill = '#34d399';
+      }
+      return { pct, fill };
+    }
+
+    function slackReportsPctFill(reportsStr, isTeam) {
+      const n = parseInt(String(reportsStr).replace(/件/g, ''), 10) || 0;
+      const cap = isTeam ? 80 : 10;
+      const pct = Math.min(100, (n / cap) * 100);
+      let fill = '#f87171';
+      if (n >= (isTeam ? 60 : 6)) fill = '#34d399';
+      else if (n > 0) fill = '#fcd34d';
+      return { pct, fill };
+    }
+
+    /** 達成率・進捗・件数の縦棒を横3列で並べる */
+    function SlackVerticalBarTriplet({ rateStr, progressStr, reportsStr, isTeam }) {
+      const barH = 34;
+      const barW = 11;
+      const pRate = Math.min(100, Math.max(0, parsePercent(rateStr)));
+      const { pct: pProg, fill: fProg } = slackProgressPctFill(progressStr, isTeam);
+      const { pct: pRep, fill: fRep } = slackReportsPctFill(reportsStr, isTeam);
+      const cols = [
+        { key: 'rate', label: '達成', pct: pRate, fill: rateHex(rateStr) },
+        { key: 'prog', label: '進捗', pct: pProg, fill: fProg },
+        { key: 'rep', label: 'SR', pct: pRep, fill: fRep },
+      ];
+      return (
+        <div
+          className="mt-1 flex items-end justify-between gap-1 border-t border-slate-800/80 pt-1.5"
+          aria-hidden="true"
+        >
+          {cols.map((c) => (
+            <div key={c.key} className="flex min-w-0 flex-1 flex-col items-center gap-0.5">
+              <div className="flex h-[36px] w-full items-end justify-center">
+                <SlackVerticalBarFill pct={c.pct} fill={c.fill} barW={barW} barH={barH} />
+              </div>
+              <span className="text-[7px] font-semibold leading-none text-slate-500">{c.label}</span>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function SlackFlowDiagram() {
+      const steps = ['SF取得', '集計', 'slack投稿'];
+      return (
+        <div className="mb-2 flex items-stretch gap-0.5 rounded-md border border-slate-700/90 bg-slate-900/95 px-1 py-1">
+          {steps.map((label, i) => (
+            <Fragment key={label}>
+              {i > 0 ? (
+                <span className="flex items-center text-[7px] leading-none text-slate-600" aria-hidden="true">
+                  →
+                </span>
+              ) : null}
+              <div className="flex flex-1 items-center justify-center rounded bg-slate-800/90 px-0.5 py-1 text-center text-[8px] font-medium leading-tight text-sky-200">
+                {label}
+              </div>
+            </Fragment>
+          ))}
+        </div>
+      );
+    }
+
+    function SlackTeamDonut({ rateStr }) {
+      const p = Math.min(100, Math.max(0, parsePercent(rateStr)));
+      const r = 14;
+      const c = 2 * Math.PI * r;
+      const dash = (p / 100) * c;
+      const color = rateHex(rateStr);
+      return (
+        <svg width="36" height="36" viewBox="0 0 36 36" className="shrink-0" aria-hidden="true">
+          <circle cx="18" cy="18" r={r} fill="none" stroke="#334155" strokeWidth="5" />
+          <circle
+            cx="18"
+            cy="18"
+            r={r}
+            fill="none"
+            stroke={color}
+            strokeWidth="5"
+            strokeDasharray={`${dash} ${c}`}
+            strokeLinecap="round"
+            transform="rotate(-90 18 18)"
+          />
+          <text x="18" y="19" textAnchor="middle" fontSize="7" fill="#e2e8f0" fontWeight="700">
+            {Math.round(p)}
+          </text>
+        </svg>
+      );
+    }
+
+    /** セールスレポートが4日以上連続0件のメンバー（consecutiveZeroReportDays は集計結果を想定） */
+    function SlackZeroReportStreakAlert({ members }) {
+      const flagged = members.filter((m) => (m.consecutiveZeroReportDays ?? 0) >= 4);
+      return (
+        <div className="mt-2 rounded-md border border-rose-900/60 bg-rose-950/35 px-2 py-1.5">
+          <div className="mb-1 text-[8px] font-bold text-rose-200">4日以上SR0件（要フォロー）</div>
+          {flagged.length === 0 ? (
+            <p className="text-[9px] leading-snug text-slate-500">該当者なし</p>
+          ) : (
+            <ul className="space-y-0.5">
+              {flagged.map((m) => (
+                <li key={m.name} className="text-[9px] leading-snug text-rose-100">
+                  <span className="font-semibold text-rose-50">{m.name}</span>
+                  <span className="text-rose-200/90">（{m.consecutiveZeroReportDays}日連続・0件）</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      );
+    }
+
+    /** 昨日からの営業進捗金額が7日以上変わっていないメンバー（集計結果を想定） */
+    function SlackNoAbProgressChangeAlert({ members }) {
+      const flagged = members.filter((m) => (m.consecutiveNoAbProgressChangeDays ?? 0) >= 7);
+      return (
+        <div className="mt-2 rounded-md border border-amber-900/55 bg-amber-950/35 px-2 py-1.5">
+          <div className="mb-1 text-[8px] font-bold text-amber-200">7日以上営業進捗に変化なし（要フォロー）</div>
+          {flagged.length === 0 ? (
+            <p className="text-[9px] leading-snug text-slate-500">該当者なし</p>
+          ) : (
+            <ul className="space-y-0.5">
+              {flagged.map((m) => (
+                <li key={m.name} className="text-[9px] leading-snug text-amber-100">
+                  <span className="font-semibold text-amber-50">{m.name}</span>
+                  <span className="text-amber-200/90">（{m.consecutiveNoAbProgressChangeDays}日間同額）</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      );
+    }
+
+    /** スマホ1画面に課全体＋個人4名程度が入るよう、1行ラベル＋数値で詰める */
+    function SlackMetricLine({ label, value, valueClassName }) {
+      const valueCls = valueClassName ? `font-semibold ${valueClassName}` : 'font-semibold text-slate-50';
+      return (
+        <div className="flex items-baseline justify-between gap-1.5 border-b border-slate-800/80 py-0.5 last:border-b-0">
+          <span className="max-w-[52%] shrink-0 text-[9px] leading-tight text-slate-500">{label}</span>
+          <span className={`min-w-0 text-right text-[10px] leading-tight break-all ${valueCls}`}>{value}</span>
+        </div>
+      );
+    }
+
+    function SlackMemberBlock({ member }) {
+      return (
+        <div className="rounded-lg border border-slate-800 bg-slate-900/70 px-2 py-1">
+          <div className="mb-0.5 border-b border-slate-700 pb-0.5 text-[11px] font-bold leading-none text-slate-50">
+            {member.name}
+          </div>
+          <SlackMetricLine label="営業数値" value={member.es} />
+          <SlackMetricLine label="達成率" value={member.rate} valueClassName={rateToneClass(member.rate)} />
+          <SlackMetricLine
+            label="昨日からの営業進捗"
+            value={member.progress}
+            valueClassName={progressToneClass(member.progress, false)}
+          />
+          <SlackMetricLine label="SR件数(昨日)" value={member.reports} valueClassName={reportsToneClass(member.reports, false)} />
+          <SlackVerticalBarTriplet
+            rateStr={member.rate}
+            progressStr={member.progress}
+            reportsStr={member.reports}
+            isTeam={false}
+          />
+        </div>
+      );
+    }
+
+    function SlackReportScroll({ data }) {
+      const t = data.team;
+
+      return (
+        <div className="h-[min(58vh,580px)] overflow-y-auto overscroll-y-contain px-2.5 py-2 font-sans">
+          <SlackFlowDiagram />
+          <div className="text-[13px] font-bold leading-tight text-slate-50">【{data.date} 朝レポート】</div>
+          <div className="mt-2 rounded-lg border border-slate-800 bg-slate-900/60 px-2 py-1">
+            <div className="flex gap-2">
+              <SlackTeamDonut rateStr={t.rate} />
+              <div className="min-w-0 flex-1">
+                <div className="mb-0.5 text-[10px] font-bold text-sky-300">課全体</div>
+                <SlackMetricLine label="営業数値" value={t.es} />
+                <SlackMetricLine label="達成率" value={t.rate} valueClassName={rateToneClass(t.rate)} />
+                <SlackMetricLine
+                  label="昨日からの営業進捗"
+                  value={t.progress}
+                  valueClassName={progressToneClass(t.progress, true)}
+                />
+                <SlackMetricLine label="SR件数(昨日)" value={t.reports} valueClassName={reportsToneClass(t.reports, true)} />
+                <SlackVerticalBarTriplet
+                  rateStr={t.rate}
+                  progressStr={t.progress}
+                  reportsStr={t.reports}
+                  isTeam={true}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="mt-2 text-[10px] font-bold text-sky-300">個人別</div>
+          <div className="mt-1 flex flex-col gap-1">
+            {data.members.map((m) => (
+              <SlackMemberBlock key={m.name} member={m} />
+            ))}
+          </div>
+          <SlackZeroReportStreakAlert members={data.members} />
+          <SlackNoAbProgressChangeAlert members={data.members} />
+          <div className="mt-2 rounded-md bg-slate-900/80 px-2 py-1.5 text-[9px] leading-snug text-slate-500">
+            <div>※A＝契約書手交</div>
+            <div>※B＝口頭受注</div>
+          </div>
+        </div>
+      );
+    }
+
+    function SlackPhoneFrame({ children }) {
+      return (
+        <div className="w-full max-w-[300px]">
+          <div className="w-full rounded-[1.75rem] border-[8px] border-slate-900 bg-slate-900 shadow-xl ring-1 ring-slate-950/40">
+            <div className="overflow-hidden rounded-[1.1rem] bg-slate-950">
+              <div className="flex justify-center bg-slate-950 pt-1.5">
+                <span className="h-0.5 w-8 rounded-full bg-slate-700" aria-hidden="true" />
+              </div>
+              <div className="border-b border-slate-800 px-2.5 py-1.5">
+                <div className="text-[10px] font-semibold text-slate-400"># 課専用チャネル</div>
+              </div>
+              {children}
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function SlackPreview({ data }) {
+      return (
+        <div className="flex w-full flex-col items-center">
+          <p className="mb-4 max-w-md text-center text-xs text-slate-500">表示幅はスマホ想定（約300px）です。</p>
+          <SlackPhoneFrame>
+            <SlackReportScroll data={data} />
+          </SlackPhoneFrame>
+        </div>
+      );
+    }
+
+    function ABProgressReportToolOverview() {
+      return (
+        <div className="min-h-screen bg-slate-50 text-slate-900 p-6 md:p-10">
+          <div className="mx-auto max-w-6xl space-y-8">
+            <section className="rounded-3xl bg-white shadow-sm border border-slate-200 p-8 md:p-10">
+              <div className="inline-flex rounded-full bg-slate-100 px-4 py-1 text-sm font-medium text-slate-700">
+                Tailwind CSS 版
+              </div>
+              <h1 className="mt-4 text-3xl md:text-5xl font-bold tracking-tight">
+                予算進捗自動slackレポート
+              </h1>
+              <p className="mt-4 max-w-4xl text-base md:text-lg leading-8 text-slate-600">
+                毎朝8時にSalesforceのデータを取得し、課全体と個人別の予算に対する進捗（数値・達成率など）を集計して、
+                slackの課専用チャネルへ自動投稿するツール。
+              </p>
+              <p className="mt-4 max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-700">
+                <span className="font-semibold text-slate-800">提出課題の流れに沿った構成：</span>{' '}
+                <span className="font-semibold text-emerald-800">①完成イメージの図解（必須）</span>
+                <span className="text-slate-400"> → </span>
+                <span className="font-semibold text-sky-800">②4つのパーツに分類（任意）</span>
+                <span className="text-slate-400"> → </span>
+                <span className="font-semibold text-violet-800">③3つのコツの活用（任意）</span>
+              </p>
+            </section>
+
+            <SectionCard
+              taskTheme={1}
+              badge="課題①（必須）"
+              title="1 完成イメージの図解（必須）"
+              description="slackに届く最終表示をスマホ幅で再現しています。流れ図・ドーナツ・縦棒3本、フォローが必要なメンバーの抽出まで含みます。"
+            >
+              <SlackPreview data={slackSampleData} />
+            </SectionCard>
+
+            <FourPartsInfographic />
+
+            <SectionCard
+              taskTheme={3}
+              badge="課題③（任意）"
+              title="3 伝わるための3つのコツ（任意）"
+              description="コツ①（完成形の絵から作る）は、このページ先頭の「1 完成イメージの図解」で実践済みです。以下はコツ②・③と、本HTMLで行った具体例です。"
+            >
+              <div className="mb-8 rounded-2xl border border-violet-100 bg-violet-50/40 p-5 shadow-sm">
+                <h3 className="text-base font-bold text-violet-950">ChatGPTで相談した流れ（要約）</h3>
+                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+                  共有スレッド「slackレポート相談」の対話を、提出用に次のように整理しています。
+                </p>
+                <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-700">
+                  {chatgptConsultationSummaryItems.map((line) => (
+                    <li key={line}>{line}</li>
+                  ))}
+                </ol>
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                {presentationTips.map((tip) => (
+                  <div
+                    key={tip.title}
+                    className="rounded-2xl border border-violet-100 bg-violet-50/30 p-5 shadow-sm"
+                  >
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-bold text-white">
+                      {tip.num}
+                    </div>
+                    <h3 className="mt-3 text-lg font-bold text-slate-900">{tip.title}</h3>
+                    <div className="mt-2 space-y-3 text-sm leading-relaxed text-slate-600">
+                      <p>{tip.intro}</p>
+                      <div>
+                        <p className="font-semibold text-violet-950">本ページでの実践</p>
+                        <ul className="mt-2 list-disc space-y-2 pl-5 marker:text-violet-600">
+                          {tip.practiceItems.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </SectionCard>
+
+            <SectionCard title="処理フロー" description="Salesforceから取得したデータを整理し、Slackへ自動配信する全体像です。">
+              <ProcessFlow />
+            </SectionCard>
+
+            <SectionCard title="出力内容">
+              <div className="grid gap-6 md:grid-cols-2">
+                <MetricList title="課全体" items={metricItems} />
+                <MetricList title="個人別" items={metricItems} />
+              </div>
+            </SectionCard>
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<ABProgressReportToolOverview />);
+  </script>
+</body>
+</html>

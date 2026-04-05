@@ -1,0 +1,242 @@
+{
+  "東京国際フォーラム ホールA": {
+    "officialUrl": "https://www.t-i-forum.co.jp/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": "公式予約フロー変更時は要スクレイパー更新"
+  },
+  "日本武道館": {
+    "officialUrl": "https://www.nipponbudokan.or.jp/",
+    "suggestedLeadMonths": 10,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "東京ビッグサイト 南展示棟": {
+    "officialUrl": "https://www.bigsite.or.jp/",
+    "suggestedLeadMonths": 14,
+    "priority": 1,
+    "integrationNotes": "展示棟別にルール分割の可能性"
+  },
+  "八王子市民会館 メインホール": {
+    "officialUrl": "https://www.city.hachioji.tokyo.jp/",
+    "suggestedLeadMonths": 6,
+    "priority": 3,
+    "integrationNotes": "自治体サイト／利用案内PDF監視"
+  },
+  "有明アリーナ メインアリーナ": {
+    "officialUrl": "https://www.ariake-arena.tokyo/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "グランキューブ大阪 メイン": {
+    "officialUrl": "https://www.grancube.co.jp/",
+    "suggestedLeadMonths": 11,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "フェスティバルホール": {
+    "officialUrl": "https://www.festivalhall.or.jp/",
+    "suggestedLeadMonths": 11,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "インテックス大阪 展示棟": {
+    "officialUrl": "https://www.intex-osaka.com/",
+    "suggestedLeadMonths": 13,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "岸和田市立文化会館 大ホール": {
+    "officialUrl": "https://www.city.kishiwada.lg.jp/",
+    "suggestedLeadMonths": 5,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "大阪城ホール": {
+    "officialUrl": "https://www.osakajo-hall.jp/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "愛知県芸術劇場 大ホール": {
+    "officialUrl": "https://www.aapplib.jp/arttheater/",
+    "suggestedLeadMonths": 8,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "ポートメッセなごや": {
+    "officialUrl": "https://www.nagoyamesse.jp/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "名古屋国際会議場": {
+    "officialUrl": "https://www.nagoya-congress-center.jp/",
+    "suggestedLeadMonths": 10,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "豊田市文化会館 メイン": {
+    "officialUrl": "https://www.city.toyota.aichi.jp/",
+    "suggestedLeadMonths": 5,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "日本ガイシホール": {
+    "officialUrl": "https://www.gaishi-hall.jp/",
+    "suggestedLeadMonths": 11,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "福岡国際会議場 メインホール": {
+    "officialUrl": "https://www.fukuoka-convention.com/",
+    "suggestedLeadMonths": 10,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "マリンメッセ福岡": {
+    "officialUrl": "https://marine-messe.jp/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "北九州ソレイユホール": {
+    "officialUrl": "https://www.soleil.or.jp/",
+    "suggestedLeadMonths": 7,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "久留米シティプラザホール": {
+    "officialUrl": "https://www.city.kurume.fukuoka.jp/",
+    "suggestedLeadMonths": 5,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "北九州メディアドーム メイン": {
+    "officialUrl": "https://www.kitakyushu-mediadome.com/",
+    "suggestedLeadMonths": 10,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "札幌文化芸術劇場 hitaru": {
+    "officialUrl": "https://www.sapporo-geibun.jp/",
+    "suggestedLeadMonths": 9,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "北海道立総合体育センター": {
+    "officialUrl": "https://www.pref.hokkaido.lg.jp/",
+    "suggestedLeadMonths": 10,
+    "priority": 2,
+    "integrationNotes": "道立施設・別サイトに移転時はURL更新"
+  },
+  "函館アリーナ メイン": {
+    "officialUrl": "https://www.city.hakodate.hokkaido.jp/",
+    "suggestedLeadMonths": 8,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "旭川市民文化会館": {
+    "officialUrl": "https://www.city.asahikawa.hokkaido.jp/",
+    "suggestedLeadMonths": 5,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "真駒内セキスイハイム アイスアリーナ": {
+    "officialUrl": "https://www.m-messe.co.jp/",
+    "suggestedLeadMonths": 11,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "沖縄コンベンションセンター": {
+    "officialUrl": "https://www.okinawa-conventioncenter.jp/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "那覇市民会館 メイン": {
+    "officialUrl": "https://www.city.naha.okinawa.jp/",
+    "suggestedLeadMonths": 5,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "宜野湾コンベンションシティ": {
+    "officialUrl": "https://www.ginowancci.jp/",
+    "suggestedLeadMonths": 8,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "石垣島多目的ホール": {
+    "officialUrl": "https://www.city.ishigaki.okinawa.jp/",
+    "suggestedLeadMonths": 4,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "那覇文化芸術劇場 てだこ大ホール": {
+    "officialUrl": "https://tedako-okinawa.com/",
+    "suggestedLeadMonths": 9,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "ロームシアター京都 メイン": {
+    "officialUrl": "https://rohmtheatre.kyoto/",
+    "suggestedLeadMonths": 10,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "京都会館": {
+    "officialUrl": "https://www.miyakomesse.jp/",
+    "suggestedLeadMonths": 9,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "みやこめっせ 西ホール": {
+    "officialUrl": "https://www.miyakomesse.jp/",
+    "suggestedLeadMonths": 9,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "宇治市文化会館 大ホール": {
+    "officialUrl": "https://www.city.uji.kyoto.jp/",
+    "suggestedLeadMonths": 5,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "京都市勧業館 みやこめっせ 東館": {
+    "officialUrl": "https://www.miyakomesse.jp/",
+    "suggestedLeadMonths": 9,
+    "priority": 2,
+    "integrationNotes": ""
+  },
+  "セキスイハイムスーパーアリーナ": {
+    "officialUrl": "https://www.s-sendai.jp/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "仙台国際センター": {
+    "officialUrl": "https://www.sendai-ic.co.jp/",
+    "suggestedLeadMonths": 10,
+    "priority": 1,
+    "integrationNotes": ""
+  },
+  "石巻市総合体育館": {
+    "officialUrl": "https://www.city.ishinomaki.lg.jp/",
+    "suggestedLeadMonths": 6,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "多賀城文化会館 メイン": {
+    "officialUrl": "https://www.city.tagajo.lg.jp/",
+    "suggestedLeadMonths": 5,
+    "priority": 3,
+    "integrationNotes": ""
+  },
+  "ゼビオアリーナ仙台": {
+    "officialUrl": "https://www.z-arena.com/",
+    "suggestedLeadMonths": 12,
+    "priority": 1,
+    "integrationNotes": ""
+  }
+}

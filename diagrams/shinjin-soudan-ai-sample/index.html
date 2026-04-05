@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新人が困ったら相談できるAI - 図解サンプル</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --buddy-gradient: linear-gradient(115deg, #0ea5e9, #2563eb);
+    }
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .header-gradient { background: var(--buddy-gradient); }
+    .section-card {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+      padding: 2rem;
+      margin-bottom: 2rem;
+    }
+    .term-explain {
+      background: linear-gradient(135deg, #eff6ff 0%, #e0f2fe 100%);
+      border-left: 4px solid #2563eb;
+      padding: 1.5rem;
+      border-radius: 0.75rem;
+      margin: 1.5rem 0;
+    }
+    .minabubble {
+      position: relative;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-left: 0.25rem;
+      background: linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%);
+      border: 2px solid #fb7185;
+    }
+    .minabubble::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #fb7185 transparent transparent;
+    }
+    .aibubble {
+      position: relative;
+      padding: 1.5rem;
+      border-radius: 1rem;
+      margin-left: 0.25rem;
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 2px solid #2563eb;
+    }
+    .aibubble::before {
+      content: '';
+      position: absolute;
+      left: -10px;
+      top: 20px;
+      border-width: 10px;
+      border-style: solid;
+      border-color: transparent #2563eb transparent transparent;
+    }
+    .badge-now {
+      background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .badge-blocker {
+      background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .badge-done {
+      background: linear-gradient(135deg, #047857 0%, #10b981 100%);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+    .toc {
+      position: fixed;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: white;
+      padding: 1rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      max-height: 80vh;
+      overflow-y: auto;
+      z-index: 50;
+    }
+    @media (max-width: 1280px) { .toc { display: none; } }
+  </style>
+</head>
+<body class="bg-slate-50">
+  <header class="header-gradient text-white py-8">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-3xl md:text-4xl font-bold">新人が困ったら相談できるAI</h1>
+      <p class="mt-2 text-lg opacity-95">新人伴走ダッシュボード｜決定→精算（サンプル）</p>
+    </div>
+  </header>
+
+  <nav class="toc text-sm">
+    <div class="font-bold text-slate-800 mb-2">目次</div>
+    <div class="space-y-1">
+      <a class="block text-slate-600 hover:text-slate-900" href="#intro">導入</a>
+      <a class="block text-slate-600 hover:text-slate-900" href="#next-actions">次の一手</a>
+      <a class="block text-slate-600 hover:text-slate-900" href="#progress">進捗</a>
+      <a class="block text-slate-600 hover:text-slate-900" href="#status">いまの状態</a>
+      <a class="block text-slate-600 hover:text-slate-900" href="#questions">確認すべき質問</a>
+      <a class="block text-slate-600 hover:text-slate-900" href="#terms">用語解説</a>
+      <a class="block text-slate-600 hover:text-slate-900" href="#wrap">まとめ</a>
+    </div>
+  </nav>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <div class="section-card" id="intro">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-sky-500 to-blue-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="message-square" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">まずは落ち着いて整理</h2>
+          <p class="text-slate-500">工程に当てはめて、次の一手を3つに絞ります</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4 mb-6">
+        <div class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-rose-800"></i>
+        </div>
+        <div class="minabubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-rose-800">ミナ:</span><br>
+            いま一人で進めていて…何から手をつければいいか分からなくなりました。
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-sky-800"></i>
+        </div>
+        <div class="aibubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-sky-800">指導社員AI:</span><br>
+            大丈夫です。まず「いまの工程」と「次の一手（最大3つ）」を決めます。各一手に、期限・相手・完了条件まで付けます。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="next-actions">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-sky-500 to-blue-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="list-todo" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">次の一手（今日やること）</h2>
+          <p class="text-slate-500">最大3つ／期限と相手と完了条件をセット</p>
+        </div>
+      </div>
+
+      <div class="grid gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-gradient-to-r from-sky-50 to-blue-50">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800 text-lg">① 仕入先に在庫確認</div>
+              <div class="text-slate-600 mt-1">「いつまで確保できるか」も一緒に聞く</div>
+            </div>
+            <span class="badge-now">いまここ</span>
+          </div>
+          <div class="mt-3 grid md:grid-cols-3 gap-3 text-sm">
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="calendar" class="w-4 h-4"></i>期限: 今日 17:00（仮）</div>
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="user" class="w-4 h-4"></i>相手: 仕入先（ホテル）</div>
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="check-circle" class="w-4 h-4"></i>完了条件: 在庫OK + 期限回答</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800 text-lg">② 顧客に「人数確定の期限」を確認</div>
+              <div class="text-slate-600 mt-1">人数が決まらないと、条件と手配が止まりやすい</div>
+            </div>
+          </div>
+          <div class="mt-3 grid md:grid-cols-3 gap-3 text-sm">
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="calendar" class="w-4 h-4"></i>期限: 明日 12:00（仮）</div>
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="users" class="w-4 h-4"></i>相手: 顧客</div>
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="check-circle" class="w-4 h-4"></i>完了条件: 確定日が決まる</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl border border-slate-200 bg-white">
+          <div class="flex items-start justify-between gap-3">
+            <div>
+              <div class="font-bold text-slate-800 text-lg">③ 社内の精算ルール（証拠書類）を確認</div>
+              <div class="text-slate-600 mt-1">「精算の終わり」を先に知っておくと迷子にならない</div>
+            </div>
+          </div>
+          <div class="mt-3 grid md:grid-cols-3 gap-3 text-sm">
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="calendar" class="w-4 h-4"></i>期限: 近日（仮）</div>
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="user" class="w-4 h-4"></i>相手: 社内（経理/上長）</div>
+            <div class="flex items-center gap-2 text-slate-600"><i data-lucide="check-circle" class="w-4 h-4"></i>完了条件: 必要書類の一覧が分かる</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="progress">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-sky-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="git-branch" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">いまの位置（決定→精算）</h2>
+          <p class="text-slate-500">サンプルでは「手配」が進行中の想定</p>
+        </div>
+      </div>
+
+      <div class="grid gap-3">
+        <div class="flex items-center justify-between p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-3">
+            <i data-lucide="check-circle" class="w-6 h-6 text-emerald-600"></i>
+            <div class="font-bold text-slate-800">決定</div>
+          </div>
+          <span class="badge-done">完了</span>
+        </div>
+        <div class="flex items-center justify-between p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-3">
+            <i data-lucide="check-circle" class="w-6 h-6 text-emerald-600"></i>
+            <div class="font-bold text-slate-800">見積・条件</div>
+          </div>
+          <span class="badge-done">完了</span>
+        </div>
+        <div class="flex items-center justify-between p-4 rounded-xl border border-blue-200 bg-blue-50">
+          <div class="flex items-center gap-3">
+            <i data-lucide="arrow-right" class="w-6 h-6 text-blue-700"></i>
+            <div class="font-bold text-slate-800">手配</div>
+          </div>
+          <span class="badge-now">進行中</span>
+        </div>
+        <div class="flex items-center justify-between p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-3">
+            <i data-lucide="file-text" class="w-6 h-6 text-slate-600"></i>
+            <div class="font-bold text-slate-800">書類</div>
+          </div>
+          <span class="text-slate-600 font-bold">未着手</span>
+        </div>
+        <div class="flex items-center justify-between p-4 rounded-xl border border-rose-200 bg-rose-50">
+          <div class="flex items-center gap-3">
+            <i data-lucide="alert-triangle" class="w-6 h-6 text-rose-700"></i>
+            <div class="font-bold text-slate-800">請求</div>
+          </div>
+          <span class="badge-blocker">要確認</span>
+        </div>
+        <div class="flex items-center justify-between p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-3">
+            <i data-lucide="map-pin" class="w-6 h-6 text-slate-600"></i>
+            <div class="font-bold text-slate-800">実施</div>
+          </div>
+          <span class="text-slate-600 font-bold">未着手</span>
+        </div>
+        <div class="flex items-center justify-between p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-3">
+            <i data-lucide="receipt" class="w-6 h-6 text-slate-600"></i>
+            <div class="font-bold text-slate-800">精算</div>
+          </div>
+          <span class="text-slate-600 font-bold">未着手</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="status">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="check-circle" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">いまの状態（できている／未完）</h2>
+          <p class="text-slate-500">Excel入力がある前提の見え方（サンプル）</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-emerald-50">
+          <div class="font-bold text-emerald-900 mb-2">できている</div>
+          <ul class="list-disc pl-5 text-slate-700 space-y-2">
+            <li>旅行内容の決定（社内OK）</li>
+            <li>見積書の提示（条件のたたき台）</li>
+          </ul>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-rose-50">
+          <div class="font-bold text-rose-900 mb-2">未完（次の一手に接続）</div>
+          <ul class="list-disc pl-5 text-slate-700 space-y-2">
+            <li>手配の在庫確保（→「① 仕入先に在庫確認」）</li>
+            <li>人数確定（→「② 顧客に期限確認」）</li>
+            <li>請求のタイミング（→「③ 社内ルール確認」）</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="questions">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-rose-500 to-orange-500 rounded-xl flex items-center justify-center">
+          <i data-lucide="message-square" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">確認すべき質問（聞けない時の壁打ち）</h2>
+          <p class="text-slate-500">顧客／仕入先／社内で分けて、送れる文面にする</p>
+        </div>
+      </div>
+
+      <div class="grid gap-6">
+        <div class="p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2 font-bold text-slate-800 mb-2">
+            <i data-lucide="users" class="w-5 h-5 text-slate-700"></i>
+            顧客に聞く
+          </div>
+          <ul class="list-disc pl-5 text-slate-700 space-y-2">
+            <li>人数はいつ確定できますか？（確定日が必要）</li>
+            <li>お支払い方法は振込／カードのどちらですか？</li>
+          </ul>
+          <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-700">
+            <div class="font-bold mb-1">送れる文面（例）</div>
+            <div>「お世話になっております。手配を進めるため、①人数確定の予定日 ②お支払い方法（振込/カード）をご教示ください。」</div>
+          </div>
+          <div class="mt-3 text-sm text-slate-600">
+            仮置き案: 人数が未確定なら「最大人数で仮押さえできるか」を仕入先へ確認して止める（会社ルールにより不可のこともあるため要確認）。
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2 font-bold text-slate-800 mb-2">
+            <i data-lucide="phone" class="w-5 h-5 text-slate-700"></i>
+            仕入先に聞く
+          </div>
+          <ul class="list-disc pl-5 text-slate-700 space-y-2">
+            <li>在庫は確保できますか？確保できる場合、いつまでキープ可能ですか？</li>
+            <li>人数や日程変更が出た場合、変更料は発生しますか？</li>
+          </ul>
+          <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-700">
+            <div class="font-bold mb-1">送れる文面（例）</div>
+            <div>「在庫確保について確認です。①本日中に確保可能か ②確保できる場合のキープ期限 ③人数/日程変更時の変更料の有無をご教示ください。」</div>
+          </div>
+        </div>
+
+        <div class="p-4 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2 font-bold text-slate-800 mb-2">
+            <i data-lucide="mail" class="w-5 h-5 text-slate-700"></i>
+            社内に聞く
+          </div>
+          <ul class="list-disc pl-5 text-slate-700 space-y-2">
+            <li>請求書は「いつ」出すのが標準ですか？（見積確定後／手配完了後など）</li>
+            <li>精算の証拠書類は何が必要ですか？（請求書、明細、領収書など）</li>
+          </ul>
+          <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm text-slate-700">
+            <div class="font-bold mb-1">送れる文面（例）</div>
+            <div>「新人で確認です。①請求書発行の標準タイミング ②精算の必要書類（証拠）の一覧をご教示ください。」</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card" id="terms">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-yellow-500 rounded-xl flex items-center justify-center">
+          <i data-lucide="lightbulb" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">用語解説（知識ゼロ前提）</h2>
+          <p class="text-slate-500">初出の用語はここで必ず止めて説明</p>
+        </div>
+      </div>
+
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="lightbulb" class="w-8 h-8 text-blue-700"></i>
+          <div>
+            <div class="text-xl font-bold text-slate-800">「精算」とは？</div>
+            <div class="text-lg mt-2 text-slate-700">
+              旅行が終わったあとに、<strong>かかったお金（原価）を全部そろえて</strong>、最後の金額を確定する作業です。<br>
+              まずは「<span class="font-bold text-blue-800">原価の証拠（請求書・明細）</span>が揃っているか」を確認します。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="receipt" class="w-8 h-8 text-blue-700"></i>
+          <div>
+            <div class="text-xl font-bold text-slate-800">「請求書」と「入金」</div>
+            <div class="text-lg mt-2 text-slate-700">
+              請求書は「この金額をこの期限までに払ってください」の書類。入金は、お金が実際に入ってきた状態です。<br>
+              新人は「請求した＝入金した」と混ざりやすいので、<strong>別の工程</strong>として扱います。
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="section-card" id="wrap">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-slate-700 to-slate-900 rounded-xl flex items-center justify-center">
+          <i data-lucide="flag" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">まとめ（今日のゴール）</h2>
+          <p class="text-slate-500">「次の一手3つ」が終わったら、工程が前に進みます</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4 mb-6">
+        <div class="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-7 h-7 text-sky-800"></i>
+        </div>
+        <div class="aibubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-sky-800">指導社員AI:</span><br>
+            今日のゴールは「在庫OK」「人数確定の期限」「精算の必要書類」が分かる状態です。これが揃えば、次の工程（書類→請求）に迷わず進めます。
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4">
+        <div class="w-14 h-14 rounded-full bg-rose-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="check-circle" class="w-7 h-7 text-rose-800"></i>
+        </div>
+        <div class="minabubble flex-1">
+          <p class="text-lg">
+            <span class="font-bold text-rose-800">ミナ:</span><br>
+            まずは「①在庫確認」からやります。分からない所は質問テンプレを使って、揃ったら次に進みます。
+          </p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

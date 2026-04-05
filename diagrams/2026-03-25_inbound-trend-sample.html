@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>インバウンドトレンド（サンプル）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root { --grad: linear-gradient(115deg, #4f46e5, #0ea5e9); }
+    body { font-family: 'Noto Sans JP', sans-serif; }
+    .header-gradient { background: var(--grad); }
+    .section-card { background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,.08); padding: 2rem; margin-bottom: 2rem; }
+    .nowmebubble { position: relative; padding: 1.25rem; border-radius: 1rem; background: linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%); border: 2px solid #f59e0b; }
+    .nowmebubble::before { content: ''; position: absolute; left: -10px; top: 18px; border-width: 10px; border-style: solid; border-color: transparent #f59e0b transparent transparent; }
+    .senpaibubble { position: relative; padding: 1.25rem; border-radius: 1rem; background: linear-gradient(135deg,#eef2ff 0%,#e0f2fe 100%); border: 2px solid #4f46e5; }
+    .senpaibubble::before { content: ''; position: absolute; left: -10px; top: 18px; border-width: 10px; border-style: solid; border-color: transparent #4f46e5 transparent transparent; }
+    .term-explain { background: linear-gradient(135deg,#eef2ff 0%,#e0f2fe 100%); border-left: 4px solid #4f46e5; padding: 1.25rem; border-radius: .75rem; margin: 1.25rem 0; }
+  </style>
+</head>
+<body class="bg-slate-50">
+  <header class="header-gradient text-white py-8">
+    <div class="max-w-4xl mx-auto px-4">
+      <h1 class="text-3xl md:text-4xl font-bold">インバウンドトレンド（サンプル）</h1>
+      <p class="mt-2 text-lg opacity-95">通勤10分｜トレンド図解ダッシュボード</p>
+      <p class="mt-3 text-sm opacity-90">2026-03-25 / ※内容はプレースホルダーです</p>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 py-8">
+    <section class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center">
+          <i data-lucide="lightbulb" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">導入（型）</h2>
+          <p class="text-slate-500">「3点（どこ/なぜ/提案）」で切る</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4 mb-5">
+        <div class="w-12 h-12 rounded-full bg-amber-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-6 h-6 text-amber-800"></i>
+        </div>
+        <div class="nowmebubble flex-1">
+          <p class="text-base md:text-lg">
+            <span class="font-bold text-amber-800">いまの私:</span><br>
+            情報は読んだのに、会話で“ひと言”が出ません…。
+          </p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-6 h-6 text-indigo-800"></i>
+        </div>
+        <div class="senpaibubble flex-1">
+          <p class="text-base md:text-lg">
+            <span class="font-bold text-indigo-800">インバウンド先輩:</span><br>
+            「どこ（スポット）」「なぜ（理由）」「誰にどう提案するか」の3点に切ると、会話に変わります。
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-sky-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="check-circle" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">今日のインプット（10分）</h2>
+          <p class="text-slate-500">チェックだけで“引き出し”化</p>
+        </div>
+      </div>
+
+      <div class="grid gap-3">
+        <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <input type="checkbox" class="mt-1 w-5 h-5">
+          <span class="text-slate-700"><strong>結論を1行</strong>で言える（何が新しい？）</span>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <input type="checkbox" class="mt-1 w-5 h-5">
+          <span class="text-slate-700"><strong>覚える3つ</strong>（スポット／理由／提案）を押さえた</span>
+        </label>
+        <label class="flex items-start gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <input type="checkbox" class="mt-1 w-5 h-5">
+          <span class="text-slate-700"><strong>30秒会話</strong>（結論→理由→例）が言える</span>
+        </label>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="star" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">覚える3つ（サンプル）</h2>
+          <p class="text-slate-500">（実運用では記事内容に差し替え）</p>
+        </div>
+      </div>
+
+      <div class="grid gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+          <div class="font-bold text-slate-800">1) スポット/体験</div>
+          <div class="text-slate-700 mt-1">例: <strong>浅草</strong>の短時間動線（撮影＋食）</div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+          <div class="font-bold text-slate-800">2) 理由</div>
+          <div class="text-slate-700 mt-1">例: “撮って→食べて→移動”が早く成立し、満足を作りやすい</div>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+          <div class="font-bold text-slate-800">3) 営業への変換</div>
+          <div class="text-slate-700 mt-1">例: 初回訪日・短期滞在の方に「午前の1枠」として提案</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-sky-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="message-circle" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">会話テンプレ（型）</h2>
+          <p class="text-slate-500">30秒と2分を用意</p>
+        </div>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+          <div class="font-bold text-slate-800 mb-2">30秒版</div>
+          <p class="text-slate-700">「最近は（結論）。理由は（理由）。例えば（例）。」</p>
+        </div>
+        <div class="p-4 rounded-xl border border-slate-200 bg-slate-50">
+          <div class="font-bold text-slate-800 mb-2">2分版</div>
+          <p class="text-slate-700">30秒版 + 「ただ（注意点）。なので（混雑回避/代替案）。」</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-blue-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="book-open" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">用語解説（例）</h2>
+          <p class="text-slate-500">初出で必ず解説</p>
+        </div>
+      </div>
+
+      <div class="term-explain">
+        <div class="flex items-start gap-4">
+          <i data-lucide="lightbulb" class="w-8 h-8 text-indigo-600"></i>
+          <div>
+            <div class="term-word text-xl font-bold">「ゴールデンルート」とは？</div>
+            <div class="text-lg mt-2 text-slate-700">
+              初回訪日で定番の周遊コースのことです。会話では「初回向けか／リピーター向けか」を切り口にします。
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-card">
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-12 h-12 bg-gradient-to-br from-indigo-600 to-sky-600 rounded-xl flex items-center justify-center">
+          <i data-lucide="check-circle" class="w-6 h-6 text-white"></i>
+        </div>
+        <div>
+          <h2 class="text-2xl font-bold text-slate-800">まとめ</h2>
+          <p class="text-slate-500">“明日言う一言”を確定</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center flex-shrink-0">
+          <i data-lucide="user" class="w-6 h-6 text-indigo-800"></i>
+        </div>
+        <div class="senpaibubble flex-1">
+          <p class="text-base md:text-lg">
+            <span class="font-bold text-indigo-800">インバウンド先輩:</span><br>
+            明日は「結論→理由→例」の30秒版だけ言えればOKです。次は“注意点と代替案”を1つ足しましょう。
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>lucide.createIcons();</script>
+</body>
+</html>

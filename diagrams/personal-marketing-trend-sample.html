@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>パーソナル図解 - マーケ技術トレンド</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <main class="max-w-5xl mx-auto p-6 md:p-10 space-y-6">
+    <header class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h1 class="text-2xl md:text-3xl font-bold">パーソナル図解ダッシュボード</h1>
+      <p class="mt-2 text-slate-600">SaaS / デジタルマーケ担当向け（広告運用・分析・レポート）</p>
+      <div class="mt-4 grid md:grid-cols-3 gap-3 text-sm">
+        <div class="bg-indigo-50 border border-indigo-100 rounded-xl p-3">
+          <p class="font-semibold text-indigo-900">30秒で思い出す</p>
+          <p class="text-indigo-800 mt-1">技術トレンドの本質と運用影響を即想起</p>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-100 rounded-xl p-3">
+          <p class="font-semibold text-emerald-900">使う人</p>
+          <p class="text-emerald-800 mt-1">自分だけ（日々の学習ストック）</p>
+        </div>
+        <div class="bg-amber-50 border border-amber-100 rounded-xl p-3">
+          <p class="font-semibold text-amber-900">典型課題</p>
+          <p class="text-amber-800 mt-1">仕様変更の理解に時間がかかり、数日で忘れる</p>
+        </div>
+      </div>
+    </header>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-xl font-bold flex items-center gap-2">
+        <i data-lucide="zap" class="w-5 h-5 text-indigo-600"></i> 今日の結論（30秒）
+      </h2>
+      <p class="mt-3 leading-relaxed">
+        新しい広告機能や仕様変更は、まず「何が変わったか」を1行で固定し、次に「運用のどこへ影響するか」を3点に圧縮すると、判断が速くなります。
+        迷ったときは、配信・入札・クリエイティブ・計測の4軸で影響を切り分けると、次アクションが明確になります。
+      </p>
+    </section>
+
+    <section class="grid md:grid-cols-2 gap-6">
+      <article class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <h3 class="text-lg font-bold flex items-center gap-2">
+          <i data-lucide="brain" class="w-5 h-5 text-violet-600"></i> 覚える3点
+        </h3>
+        <ol class="mt-3 space-y-2 list-decimal list-inside">
+          <li><span class="font-semibold">事実:</span> 仕様変更の公式差分を1行で言える状態にする。</li>
+          <li><span class="font-semibold">解釈:</span> 影響領域（配信/入札/クリエイティブ/計測）を特定する。</li>
+          <li><span class="font-semibold">行動:</span> 今日1件・今週2件の運用ToDoに落とし込む。</li>
+        </ol>
+      </article>
+
+      <article class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <h3 class="text-lg font-bold flex items-center gap-2">
+          <i data-lucide="clipboard-check" class="w-5 h-5 text-emerald-600"></i> 実行アクション
+        </h3>
+        <div class="mt-3 space-y-3">
+          <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-100">
+            <p class="font-semibold text-emerald-900">今日</p>
+            <p class="text-emerald-800 text-sm mt-1">最新変更を1件選び、30秒サマリーを作る。</p>
+          </div>
+          <div class="p-3 rounded-xl bg-sky-50 border border-sky-100">
+            <p class="font-semibold text-sky-900">今週</p>
+            <ul class="text-sky-800 text-sm mt-1 list-disc list-inside">
+              <li>影響マトリクスを更新（大/中/小）。</li>
+              <li>2分説明テンプレを追加（会議共有用）。</li>
+            </ul>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h3 class="text-lg font-bold flex items-center gap-2">
+        <i data-lucide="grid-2x2-check" class="w-5 h-5 text-amber-600"></i> 運用影響マトリクス（例）
+      </h3>
+      <div class="mt-4 overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-100">
+              <th class="text-left p-3 border border-slate-200">領域</th>
+              <th class="text-left p-3 border border-slate-200">影響度</th>
+              <th class="text-left p-3 border border-slate-200">確認ポイント</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-3 border border-slate-200">配信</td>
+              <td class="p-3 border border-slate-200 font-semibold text-rose-700">大</td>
+              <td class="p-3 border border-slate-200">配信面・対象拡張の挙動変化</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="p-3 border border-slate-200">入札</td>
+              <td class="p-3 border border-slate-200 font-semibold text-amber-700">中</td>
+              <td class="p-3 border border-slate-200">学習期間・目標値の再設定要否</td>
+            </tr>
+            <tr>
+              <td class="p-3 border border-slate-200">クリエイティブ</td>
+              <td class="p-3 border border-slate-200 font-semibold text-amber-700">中</td>
+              <td class="p-3 border border-slate-200">アセット要件や優先ロジックの変化</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="p-3 border border-slate-200">計測/レポート</td>
+              <td class="p-3 border border-slate-200 font-semibold text-sky-700">小</td>
+              <td class="p-3 border border-slate-200">比較軸の変更、説明文の更新</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

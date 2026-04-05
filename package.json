@@ -1,0 +1,8 @@
+{
+  "name": "my-first-project",
+  "private": true,
+  "scripts": {
+    "web": "npm run url --prefix sales-report-architecture",
+    "web:dev": "npm run dev --prefix sales-report-architecture"
+  }
+}

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>仕様変更インパクト図解ダッシュボード</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800">
+  <main class="max-w-6xl mx-auto p-4 md:p-8 space-y-6">
+    <header class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <div class="flex items-center gap-3 mb-3">
+        <i data-lucide="layout-dashboard" class="w-6 h-6 text-indigo-600"></i>
+        <h1 class="text-2xl font-bold">仕様変更インパクト図解ダッシュボード</h1>
+      </div>
+      <p class="text-sm text-slate-600">対象: Web制作会社 / PMチーム共有用（エンジニア3名・デザイナー2名・ディレクター1名）</p>
+    </header>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <i data-lucide="check-square" class="w-5 h-5 text-emerald-600"></i>今日やること（5分で決める）
+      </h2>
+      <ul class="grid md:grid-cols-2 gap-3 text-sm">
+        <li class="p-3 rounded-lg bg-emerald-50 border border-emerald-100">変更箇所マップで「新規/変更/影響なし」の色を確認する</li>
+        <li class="p-3 rounded-lg bg-emerald-50 border border-emerald-100">自分の職種行を見て、今週タスクを3件以内で確定する</li>
+        <li class="p-3 rounded-lg bg-emerald-50 border border-emerald-100">不明点は「未確定事項」に記入し、確認先を決める</li>
+        <li class="p-3 rounded-lg bg-emerald-50 border border-emerald-100">クリティカル作業（遅れると納期に影響）を先に着手する</li>
+      </ul>
+    </section>
+
+    <section class="grid lg:grid-cols-3 gap-6">
+      <article class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+          <i data-lucide="git-branch" class="w-5 h-5 text-blue-600"></i>影響範囲マップ（全体のどこが変わるか）
+        </h2>
+        <div class="grid md:grid-cols-3 gap-3 text-sm">
+          <div class="p-4 rounded-lg border border-blue-200 bg-blue-50">
+            <p class="font-semibold mb-1">新規（青）</p>
+            <p>見積依頼フォームの追加項目</p>
+          </div>
+          <div class="p-4 rounded-lg border border-amber-200 bg-amber-50">
+            <p class="font-semibold mb-1">変更（黄）</p>
+            <p>CMS入力仕様・ワイヤー文言・検証項目</p>
+          </div>
+          <div class="p-4 rounded-lg border border-slate-200 bg-slate-100">
+            <p class="font-semibold mb-1">影響なし（灰）</p>
+            <p>既存LPの配色、既存ブログ導線</p>
+          </div>
+        </div>
+        <p class="mt-4 text-sm text-slate-600">例: 2026/03/25の仕様変更依頼を想定。テキストだけでは伝わりにくい「全体の中での変化位置」を可視化。</p>
+      </article>
+
+      <aside class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+          <i data-lucide="book-open-text" class="w-5 h-5 text-violet-600"></i>まず覚える3つ
+        </h2>
+        <ol class="list-decimal ml-5 text-sm space-y-2">
+          <li>変更点は「全体→担当」順で確認する</li>
+          <li>今週タスクは「期限・依存・確認先」で決める</li>
+          <li>不明点は即記録し、確認期限を先に置く</li>
+        </ol>
+      </aside>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+        <i data-lucide="users" class="w-5 h-5 text-indigo-600"></i>担当マトリクス（誰が何をするか）
+      </h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="bg-slate-100">
+              <th class="p-3 text-left border border-slate-200">職種</th>
+              <th class="p-3 text-left border border-slate-200">影響あり項目</th>
+              <th class="p-3 text-left border border-slate-200">今週やること</th>
+              <th class="p-3 text-left border border-slate-200">確認先</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-3 border border-slate-200">エンジニア</td>
+              <td class="p-3 border border-slate-200">フォーム項目追加 / API入力バリデーション</td>
+              <td class="p-3 border border-slate-200">工数再見積・実装タスク分解・テスト観点更新</td>
+              <td class="p-3 border border-slate-200">PM</td>
+            </tr>
+            <tr class="bg-slate-50">
+              <td class="p-3 border border-slate-200">デザイナー</td>
+              <td class="p-3 border border-slate-200">入力UI文言 / 状態表示</td>
+              <td class="p-3 border border-slate-200">差分デザイン反映・注釈追加</td>
+              <td class="p-3 border border-slate-200">ディレクター</td>
+            </tr>
+            <tr>
+              <td class="p-3 border border-slate-200">ディレクター</td>
+              <td class="p-3 border border-slate-200">要件確定範囲 / クライアント調整</td>
+              <td class="p-3 border border-slate-200">決定事項整理・未確定事項の期限設定</td>
+              <td class="p-3 border border-slate-200">クライアント担当者</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grid lg:grid-cols-2 gap-6">
+      <article class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+          <i data-lucide="message-circle" class="w-5 h-5 text-sky-600"></i>ヒナ × 課長（導入）
+        </h2>
+        <p class="text-sm"><span class="font-semibold text-sky-700">ヒナ:</span> 「文章は読んだのですが、どこが変わったかすぐ分かりません。」</p>
+        <p class="text-sm mt-2"><span class="font-semibold text-indigo-700">課長:</span> 「先に色分けマップを見て、次に担当マトリクスを見れば、今日やることまで一直線で決まるよ。」</p>
+      </article>
+      <article class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+        <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+          <i data-lucide="help-circle" class="w-5 h-5 text-rose-600"></i>未確定事項（都度更新）
+        </h2>
+        <ul class="text-sm space-y-2">
+          <li>追加項目の必須/任意の最終判断（期限: 金曜午前）</li>
+          <li>クライアントレビュー日程の再調整（期限: 今日17:00）</li>
+          <li>QA観点追加範囲の確定（期限: 明日朝会）</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-lg font-semibold mb-3 flex items-center gap-2">
+        <i data-lucide="languages" class="w-5 h-5 text-violet-600"></i>用語解説ボックス
+      </h2>
+      <div class="grid md:grid-cols-3 gap-3 text-sm">
+        <div class="p-3 rounded-lg bg-violet-50 border border-violet-100"><strong>マイルストーン:</strong> 途中の重要締切。ここを過ぎると後工程が遅れる。</div>
+        <div class="p-3 rounded-lg bg-violet-50 border border-violet-100"><strong>クリティカルパス:</strong> 遅延がそのまま納期遅れにつながる作業列。</div>
+        <div class="p-3 rounded-lg bg-violet-50 border border-violet-100"><strong>影響範囲:</strong> 変更が波及する画面・機能・担当の範囲。</div>
+      </div>
+    </section>
+  </main>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
