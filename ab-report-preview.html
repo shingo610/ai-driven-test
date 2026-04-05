@@ -12,7 +12,18 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: 'Noto Sans JP', system-ui, sans-serif; }
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    body {
+      font-family: 'Noto Sans JP', system-ui, sans-serif;
+    }
+    @media (max-width: 640px) {
+      body {
+        font-size: 17px;
+      }
+    }
     .four-parts-bar {
       box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
     }
@@ -276,7 +287,7 @@
     const TASK_THEME = {
       1: {
         badge:
-          'inline-flex rounded-full bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-900 ring-1 ring-emerald-300/90',
+          'inline-flex rounded-full bg-emerald-50 px-3 py-1.5 text-sm font-semibold text-emerald-900 ring-1 ring-emerald-300/90 sm:py-1 sm:text-xs',
         cardBorder: 'border-emerald-200/80',
         panelBg: 'from-emerald-100 via-emerald-50 to-emerald-100/90',
         title: 'text-emerald-950',
@@ -294,7 +305,7 @@
       },
       3: {
         badge:
-          'inline-flex rounded-full bg-violet-50 px-3 py-1 text-xs font-semibold text-violet-900 ring-1 ring-violet-300/90',
+          'inline-flex rounded-full bg-violet-50 px-3 py-1.5 text-sm font-semibold text-violet-900 ring-1 ring-violet-300/90 sm:py-1 sm:text-xs',
         cardBorder: 'border-violet-200/80',
         panelBg: 'from-violet-100 via-violet-50 to-violet-100/90',
         title: 'text-violet-950',
@@ -313,17 +324,26 @@
         ? `overflow-hidden border bg-gradient-to-b shadow-sm ${borderClass} ${panelBg}`
         : `rounded-3xl bg-white border shadow-sm ${borderClass}`;
 
+      const pad = 'rounded-3xl p-4 sm:p-6 md:p-8';
       return (
-        <section className={`${sectionSurface} ${panelBg ? 'rounded-3xl p-8' : 'p-8'}`}>
+        <section className={`${sectionSurface} ${pad}`}>
           <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
             <div>
               {badge && badgeClass ? <div className={badgeClass}>{badge}</div> : null}
               <h2
-                className={['text-2xl', 'font-bold', badge ? 'mt-3' : '', titleClass].filter(Boolean).join(' ')}
+                className={[
+                  'text-xl font-bold sm:text-2xl',
+                  badge ? 'mt-3' : '',
+                  titleClass,
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
               >
                 {title}
               </h2>
-              {description ? <p className={`mt-2 ${descClass}`}>{description}</p> : null}
+              {description ? (
+                <p className={`mt-2 text-base leading-relaxed sm:text-[0.9375rem] ${descClass}`}>{description}</p>
+              ) : null}
             </div>
           </div>
           <div className="mt-6">{children}</div>
@@ -336,7 +356,7 @@
       const subtitle = hasSub ? step.sub : step.body;
       const detailBody = hasSub ? step.body : null;
       const primaryBodyClass =
-        'w-full text-center text-sm font-semibold leading-snug text-slate-900 md:text-[15px]';
+        'w-full text-center text-base font-semibold leading-relaxed text-slate-900 sm:text-sm sm:leading-snug md:text-[15px]';
 
       return (
         <div className="flex h-full min-h-0 flex-col items-center px-1 text-center md:px-2">
@@ -346,7 +366,7 @@
           >
             {index}
           </div>
-          <div className="four-parts-bar mt-4 w-full max-w-[220px] shrink-0 rounded-md bg-sky-600 px-3 py-2.5 text-sm font-bold text-white md:max-w-none md:text-base">
+          <div className="four-parts-bar mt-4 w-full max-w-[220px] shrink-0 rounded-md bg-sky-600 px-3 py-2.5 text-base font-bold text-white sm:text-sm md:max-w-none md:text-base">
             {step.title}
           </div>
           <div className="mt-3 flex w-full max-w-[220px] flex-1 flex-col justify-start md:max-w-none">
@@ -356,7 +376,7 @@
             <FourPartIllustration type={step.illustration} label={illustrationLabels[step.illustration]} />
           </div>
           {detailBody ? (
-            <p className="mt-3 w-full text-left text-xs leading-relaxed text-slate-600 md:text-[13px]">
+            <p className="mt-3 w-full text-left text-sm leading-relaxed text-slate-600 sm:text-xs md:text-[13px]">
               {detailBody}
             </p>
           ) : null}
@@ -368,11 +388,13 @@
       const th = TASK_THEME[2];
       return (
         <section
-          className={`overflow-hidden rounded-3xl border bg-gradient-to-b p-6 shadow-sm md:p-10 ${th.cardBorder} ${th.panelBg}`}
+          className={`overflow-hidden rounded-3xl border bg-gradient-to-b p-4 shadow-sm sm:p-6 md:p-10 ${th.cardBorder} ${th.panelBg}`}
         >
           <div className={th.badge}>課題②（任意）</div>
-          <h2 className={`mt-3 text-xl font-bold tracking-tight md:text-3xl ${th.title}`}>2 4つのパーツに分類</h2>
-          <p className={`mt-2 text-sm md:text-base ${th.subtitle}`}>
+          <h2 className={`mt-3 text-2xl font-bold tracking-tight md:text-3xl ${th.title}`}>
+            ②4つのパーツに分類
+          </h2>
+          <p className={`mt-2 text-base leading-relaxed sm:text-sm md:text-base ${th.subtitle}`}>
             自動化ツールを「トリガー・ソース元・処理する場所・届ける先」に整理した図解です。
           </p>
           <div className="mt-8 grid grid-cols-1 items-stretch gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6 xl:gap-8">
@@ -381,7 +403,7 @@
             ))}
           </div>
           <div
-            className={`mt-10 rounded-lg px-4 py-3.5 text-center text-xs font-medium text-white md:text-sm ${th.footerBar}`}
+            className={`mt-10 rounded-lg px-4 py-3.5 text-center text-sm font-medium text-white md:text-sm ${th.footerBar}`}
           >
             トリガー・ソース元・処理する場所・届ける先
           </div>
@@ -391,9 +413,9 @@
 
     function MetricList({ title, items }) {
       return (
-        <div className="rounded-2xl bg-slate-50 p-6">
-          <h3 className="text-lg font-semibold">{title}</h3>
-          <ul className="mt-4 space-y-3 text-slate-700">
+        <div className="rounded-2xl bg-slate-50 p-4 sm:p-6">
+          <h3 className="text-xl font-semibold sm:text-lg">{title}</h3>
+          <ul className="mt-4 space-y-3 text-base leading-relaxed text-slate-700 sm:text-sm sm:leading-normal">
             {items.map((item) => (
               <li key={item} className="flex gap-3">
                 <span className="mt-2 h-2 w-2 shrink-0 rounded-full bg-slate-400" />
@@ -416,9 +438,11 @@
         <div className="grid gap-4 md:grid-cols-[1fr_auto_1fr_auto_1fr] md:items-center">
           {nodes.map((node, index) => (
             <Fragment key={node.title}>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-6 text-center">
-                <div className="text-lg font-bold">{node.title}</div>
-                <div className="mt-2 text-sm leading-6 text-slate-600">{node.subtitle}</div>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-4 text-center sm:p-6">
+                <div className="text-xl font-bold sm:text-lg">{node.title}</div>
+                <div className="mt-2 text-base leading-relaxed text-slate-600 sm:text-sm sm:leading-6">
+                  {node.subtitle}
+                </div>
               </div>
               {index < nodes.length - 1 ? (
                 <div className="hidden md:flex items-center justify-center text-2xl text-slate-400">→</div>
@@ -551,7 +575,9 @@
               <div className="flex h-[36px] w-full items-end justify-center">
                 <SlackVerticalBarFill pct={c.pct} fill={c.fill} barW={barW} barH={barH} />
               </div>
-              <span className="text-[7px] font-semibold leading-none text-slate-500">{c.label}</span>
+              <span className="text-[11px] font-semibold leading-none text-slate-500 sm:text-[9px] md:text-[10px]">
+                {c.label}
+              </span>
             </div>
           ))}
         </div>
@@ -561,15 +587,18 @@
     function SlackFlowDiagram() {
       const steps = ['SF取得', '集計', 'slack投稿'];
       return (
-        <div className="mb-2 flex items-stretch gap-0.5 rounded-md border border-slate-700/90 bg-slate-900/95 px-1 py-1">
+        <div className="mb-2 flex items-stretch gap-0.5 rounded-md border border-slate-700/90 bg-slate-900/95 px-1 py-1.5">
           {steps.map((label, i) => (
             <Fragment key={label}>
               {i > 0 ? (
-                <span className="flex items-center text-[7px] leading-none text-slate-600" aria-hidden="true">
+                <span
+                  className="flex items-center text-xs leading-none text-slate-600 sm:text-[8px]"
+                  aria-hidden="true"
+                >
                   →
                 </span>
               ) : null}
-              <div className="flex flex-1 items-center justify-center rounded bg-slate-800/90 px-0.5 py-1 text-center text-[8px] font-medium leading-tight text-sky-200">
+              <div className="flex flex-1 items-center justify-center rounded bg-slate-800/90 px-1 py-1.5 text-center text-xs font-medium leading-tight text-sky-200 sm:px-0.5 sm:py-1 sm:text-[10px]">
                 {label}
               </div>
             </Fragment>
@@ -598,7 +627,7 @@
             strokeLinecap="round"
             transform="rotate(-90 18 18)"
           />
-          <text x="18" y="19" textAnchor="middle" fontSize="7" fill="#e2e8f0" fontWeight="700">
+          <text x="18" y="19" textAnchor="middle" fontSize="9" fill="#e2e8f0" fontWeight="700">
             {Math.round(p)}
           </text>
         </svg>
@@ -609,14 +638,14 @@
     function SlackZeroReportStreakAlert({ members }) {
       const flagged = members.filter((m) => (m.consecutiveZeroReportDays ?? 0) >= 4);
       return (
-        <div className="mt-2 rounded-md border border-rose-900/60 bg-rose-950/35 px-2 py-1.5">
-          <div className="mb-1 text-[8px] font-bold text-rose-200">4日以上SR0件（要フォロー）</div>
+        <div className="mt-2 rounded-md border border-rose-900/60 bg-rose-950/35 px-2 py-2 sm:py-1.5">
+          <div className="mb-1 text-xs font-bold leading-snug text-rose-200 sm:text-[11px]">4日以上SR0件（要フォロー）</div>
           {flagged.length === 0 ? (
-            <p className="text-[9px] leading-snug text-slate-500">該当者なし</p>
+            <p className="text-xs leading-relaxed text-slate-500 sm:text-[11px] sm:leading-snug">該当者なし</p>
           ) : (
-            <ul className="space-y-0.5">
+            <ul className="space-y-1 sm:space-y-0.5">
               {flagged.map((m) => (
-                <li key={m.name} className="text-[9px] leading-snug text-rose-100">
+                <li key={m.name} className="text-xs leading-relaxed text-rose-100 sm:text-[11px] sm:leading-snug">
                   <span className="font-semibold text-rose-50">{m.name}</span>
                   <span className="text-rose-200/90">（{m.consecutiveZeroReportDays}日連続・0件）</span>
                 </li>
@@ -631,14 +660,16 @@
     function SlackNoAbProgressChangeAlert({ members }) {
       const flagged = members.filter((m) => (m.consecutiveNoAbProgressChangeDays ?? 0) >= 7);
       return (
-        <div className="mt-2 rounded-md border border-amber-900/55 bg-amber-950/35 px-2 py-1.5">
-          <div className="mb-1 text-[8px] font-bold text-amber-200">7日以上営業進捗に変化なし（要フォロー）</div>
+        <div className="mt-2 rounded-md border border-amber-900/55 bg-amber-950/35 px-2 py-2 sm:py-1.5">
+          <div className="mb-1 text-xs font-bold leading-snug text-amber-200 sm:text-[11px]">
+            7日以上営業進捗に変化なし（要フォロー）
+          </div>
           {flagged.length === 0 ? (
-            <p className="text-[9px] leading-snug text-slate-500">該当者なし</p>
+            <p className="text-xs leading-relaxed text-slate-500 sm:text-[11px] sm:leading-snug">該当者なし</p>
           ) : (
-            <ul className="space-y-0.5">
+            <ul className="space-y-1 sm:space-y-0.5">
               {flagged.map((m) => (
-                <li key={m.name} className="text-[9px] leading-snug text-amber-100">
+                <li key={m.name} className="text-xs leading-relaxed text-amber-100 sm:text-[11px] sm:leading-snug">
                   <span className="font-semibold text-amber-50">{m.name}</span>
                   <span className="text-amber-200/90">（{m.consecutiveNoAbProgressChangeDays}日間同額）</span>
                 </li>
@@ -653,17 +684,23 @@
     function SlackMetricLine({ label, value, valueClassName }) {
       const valueCls = valueClassName ? `font-semibold ${valueClassName}` : 'font-semibold text-slate-50';
       return (
-        <div className="flex items-baseline justify-between gap-1.5 border-b border-slate-800/80 py-0.5 last:border-b-0">
-          <span className="max-w-[52%] shrink-0 text-[9px] leading-tight text-slate-500">{label}</span>
-          <span className={`min-w-0 text-right text-[10px] leading-tight break-all ${valueCls}`}>{value}</span>
+        <div className="flex items-baseline justify-between gap-2 border-b border-slate-800/80 py-1 last:border-b-0 sm:gap-1.5 sm:py-0.5">
+          <span className="max-w-[55%] shrink-0 text-xs leading-snug text-slate-400 sm:max-w-[52%] sm:text-[10px] sm:leading-tight">
+            {label}
+          </span>
+          <span
+            className={`min-w-0 text-right text-sm leading-snug break-all sm:text-[11px] sm:leading-tight ${valueCls}`}
+          >
+            {value}
+          </span>
         </div>
       );
     }
 
     function SlackMemberBlock({ member }) {
       return (
-        <div className="rounded-lg border border-slate-800 bg-slate-900/70 px-2 py-1">
-          <div className="mb-0.5 border-b border-slate-700 pb-0.5 text-[11px] font-bold leading-none text-slate-50">
+        <div className="rounded-lg border border-slate-800 bg-slate-900/70 px-2 py-1.5 sm:py-1">
+          <div className="mb-0.5 border-b border-slate-700 pb-1 text-sm font-bold leading-tight text-slate-50 sm:pb-0.5 sm:text-xs sm:leading-none">
             {member.name}
           </div>
           <SlackMetricLine label="営業数値" value={member.es} />
@@ -688,14 +725,16 @@
       const t = data.team;
 
       return (
-        <div className="h-[min(58vh,580px)] overflow-y-auto overscroll-y-contain px-2.5 py-2 font-sans">
+        <div className="h-[min(62vh,620px)] overflow-y-auto overscroll-y-contain px-3 py-2.5 font-sans sm:h-[min(58vh,580px)] sm:px-2.5 sm:py-2">
           <SlackFlowDiagram />
-          <div className="text-[13px] font-bold leading-tight text-slate-50">【{data.date} 朝レポート】</div>
-          <div className="mt-2 rounded-lg border border-slate-800 bg-slate-900/60 px-2 py-1">
+          <div className="text-base font-bold leading-snug text-slate-50 sm:text-sm sm:leading-tight">
+            【{data.date} 朝レポート】
+          </div>
+          <div className="mt-2 rounded-lg border border-slate-800 bg-slate-900/60 px-2 py-1.5 sm:py-1">
             <div className="flex gap-2">
               <SlackTeamDonut rateStr={t.rate} />
               <div className="min-w-0 flex-1">
-                <div className="mb-0.5 text-[10px] font-bold text-sky-300">課全体</div>
+                <div className="mb-1 text-xs font-bold text-sky-300 sm:mb-0.5 sm:text-[10px]">課全体</div>
                 <SlackMetricLine label="営業数値" value={t.es} />
                 <SlackMetricLine label="達成率" value={t.rate} valueClassName={rateToneClass(t.rate)} />
                 <SlackMetricLine
@@ -721,7 +760,7 @@
           </div>
           <SlackZeroReportStreakAlert members={data.members} />
           <SlackNoAbProgressChangeAlert members={data.members} />
-          <div className="mt-2 rounded-md bg-slate-900/80 px-2 py-1.5 text-[9px] leading-snug text-slate-500">
+          <div className="mt-2 rounded-md bg-slate-900/80 px-2 py-2 text-xs leading-relaxed text-slate-400 sm:py-1.5 sm:text-[10px] sm:leading-snug sm:text-slate-500">
             <div>※A＝契約書手交</div>
             <div>※B＝口頭受注</div>
           </div>
@@ -737,8 +776,8 @@
               <div className="flex justify-center bg-slate-950 pt-1.5">
                 <span className="h-0.5 w-8 rounded-full bg-slate-700" aria-hidden="true" />
               </div>
-              <div className="border-b border-slate-800 px-2.5 py-1.5">
-                <div className="text-[10px] font-semibold text-slate-400"># 課専用チャネル</div>
+              <div className="border-b border-slate-800 px-3 py-2 sm:px-2.5 sm:py-1.5">
+                <div className="text-xs font-semibold text-slate-400 sm:text-[10px]"># 課専用チャネル</div>
               </div>
               {children}
             </div>
@@ -750,7 +789,9 @@
     function SlackPreview({ data }) {
       return (
         <div className="flex w-full flex-col items-center">
-          <p className="mb-4 max-w-md text-center text-xs text-slate-500">表示幅はスマホ想定（約300px）です。</p>
+          <p className="mb-4 max-w-md px-1 text-center text-sm leading-relaxed text-slate-600 sm:text-xs sm:text-slate-500">
+            下の枠はスマホでのSlack表示イメージです（実機幅に近いサイズ）。
+          </p>
           <SlackPhoneFrame>
             <SlackReportScroll data={data} />
           </SlackPhoneFrame>
@@ -760,33 +801,44 @@
 
     function ABProgressReportToolOverview() {
       return (
-        <div className="min-h-screen bg-slate-50 text-slate-900 p-6 md:p-10">
-          <div className="mx-auto max-w-6xl space-y-8">
-            <section className="rounded-3xl bg-white shadow-sm border border-slate-200 p-8 md:p-10">
-              <div className="inline-flex rounded-full bg-slate-100 px-4 py-1 text-sm font-medium text-slate-700">
+        <div className="min-h-screen bg-slate-50 text-slate-900 p-4 sm:p-6 md:p-10">
+          <div className="mx-auto max-w-6xl space-y-6 sm:space-y-8">
+            <section className="rounded-3xl border border-slate-200 bg-white p-4 shadow-sm sm:p-6 md:p-10">
+              <div className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 sm:px-4">
                 Tailwind CSS 版
               </div>
-              <h1 className="mt-4 text-3xl md:text-5xl font-bold tracking-tight">
+              <h1 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl md:text-5xl">
                 予算進捗自動slackレポート
               </h1>
-              <p className="mt-4 max-w-4xl text-base md:text-lg leading-8 text-slate-600">
+              <p className="mt-4 max-w-4xl text-lg leading-relaxed text-slate-600 sm:text-base sm:leading-8 md:text-lg">
                 毎朝8時にSalesforceのデータを取得し、課全体と個人別の予算に対する進捗（数値・達成率など）を集計して、
                 slackの課専用チャネルへ自動投稿するツール。
               </p>
-              <p className="mt-4 max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm leading-relaxed text-slate-700">
-                <span className="font-semibold text-slate-800">提出課題の流れに沿った構成：</span>{' '}
-                <span className="font-semibold text-emerald-800">①完成イメージの図解（必須）</span>
-                <span className="text-slate-400"> → </span>
-                <span className="font-semibold text-sky-800">②4つのパーツに分類（任意）</span>
-                <span className="text-slate-400"> → </span>
-                <span className="font-semibold text-violet-800">③3つのコツの活用（任意）</span>
-              </p>
+              <div className="mt-4 max-w-4xl rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-base leading-relaxed text-slate-700 sm:text-sm">
+                <p className="font-semibold text-slate-800">提出課題の流れに沿った構成：</p>
+                <div className="mt-2 flex flex-col gap-2 md:hidden">
+                  <span className="block font-semibold text-emerald-800">①完成イメージの図解（必須）</span>
+                  <span className="block font-semibold text-sky-800">②4つのパーツに分類（任意）</span>
+                  <span className="block font-semibold text-violet-800">③3つのコツの活用（任意）</span>
+                </div>
+                <div className="mt-2 hidden flex-wrap items-center gap-x-1.5 gap-y-2 leading-relaxed md:flex">
+                  <span className="font-semibold text-emerald-800">①完成イメージの図解（必須）</span>
+                  <span className="shrink-0 text-slate-400" aria-hidden="true">
+                    →
+                  </span>
+                  <span className="font-semibold text-sky-800">②4つのパーツに分類（任意）</span>
+                  <span className="shrink-0 text-slate-400" aria-hidden="true">
+                    →
+                  </span>
+                  <span className="font-semibold text-violet-800">③3つのコツの活用（任意）</span>
+                </div>
+              </div>
             </section>
 
             <SectionCard
               taskTheme={1}
               badge="課題①（必須）"
-              title="1 完成イメージの図解（必須）"
+              title="①完成イメージの図解（必須）"
               description="slackに届く最終表示をスマホ幅で再現しています。流れ図・ドーナツ・縦棒3本、フォローが必要なメンバーの抽出まで含みます。"
             >
               <SlackPreview data={slackSampleData} />
@@ -797,15 +849,17 @@
             <SectionCard
               taskTheme={3}
               badge="課題③（任意）"
-              title="3 伝わるための3つのコツ（任意）"
-              description="コツ①（完成形の絵から作る）は、このページ先頭の「1 完成イメージの図解」で実践済みです。以下はコツ②・③と、本HTMLで行った具体例です。"
+              title="③伝わるための3つのコツ（任意）"
+              description="コツ①（完成形の絵から作る）は、このページ先頭の「①完成イメージの図解」で実践済みです。以下はコツ②・③と、本HTMLで行った具体例です。"
             >
-              <div className="mb-8 rounded-2xl border border-violet-100 bg-violet-50/40 p-5 shadow-sm">
-                <h3 className="text-base font-bold text-violet-950">ChatGPTで相談した流れ（要約）</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-600">
+              <div className="mb-8 rounded-2xl border border-violet-100 bg-violet-50/40 p-4 shadow-sm sm:p-5">
+                <h3 className="text-lg font-bold leading-snug text-violet-950 sm:text-base">
+                  ChatGPTで相談した流れ（要約）
+                </h3>
+                <p className="mt-2 text-base leading-relaxed text-slate-600 sm:text-sm">
                   共有スレッド「slackレポート相談」の対話を、提出用に次のように整理しています。
                 </p>
-                <ol className="mt-4 list-decimal space-y-2 pl-5 text-sm leading-relaxed text-slate-700">
+                <ol className="mt-4 list-decimal space-y-3 pl-5 text-base leading-relaxed text-slate-700 sm:space-y-2 sm:text-sm sm:leading-relaxed">
                   {chatgptConsultationSummaryItems.map((line) => (
                     <li key={line}>{line}</li>
                   ))}
@@ -815,17 +869,17 @@
                 {presentationTips.map((tip) => (
                   <div
                     key={tip.title}
-                    className="rounded-2xl border border-violet-100 bg-violet-50/30 p-5 shadow-sm"
+                    className="rounded-2xl border border-violet-100 bg-violet-50/30 p-4 shadow-sm sm:p-5"
                   >
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-violet-600 text-sm font-bold text-white">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-violet-600 text-base font-bold text-white sm:h-8 sm:w-8 sm:text-sm">
                       {tip.num}
                     </div>
-                    <h3 className="mt-3 text-lg font-bold text-slate-900">{tip.title}</h3>
-                    <div className="mt-2 space-y-3 text-sm leading-relaxed text-slate-600">
+                    <h3 className="mt-3 text-xl font-bold leading-snug text-slate-900 sm:text-lg">{tip.title}</h3>
+                    <div className="mt-2 space-y-3 text-base leading-relaxed text-slate-600 sm:text-sm">
                       <p>{tip.intro}</p>
                       <div>
                         <p className="font-semibold text-violet-950">本ページでの実践</p>
-                        <ul className="mt-2 list-disc space-y-2 pl-5 marker:text-violet-600">
+                        <ul className="mt-2 list-disc space-y-2.5 pl-5 marker:text-violet-600 sm:space-y-2">
                           {tip.practiceItems.map((item) => (
                             <li key={item}>{item}</li>
                           ))}
