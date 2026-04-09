@@ -105,7 +105,7 @@
         {
           name: 'Aさん',
           es: '2,800千円',
-          rate: '42.0%',
+          rate: '120.0%',
           progress: '+300千円',
           reports: '0件',
           consecutiveZeroReportDays: 6,
@@ -459,7 +459,7 @@
       return parseFloat(String(rateStr).replace(/%/g, '')) || 0;
     }
 
-    /** 達成率: 50%以下=赤、50%超〜100%未満=黄、100%=緑 */
+    /** 達成率: 50%以下=赤、50%超〜100%未満=黄、100%以上=緑（100%超えもあり得る） */
     function rateToneClass(rateStr) {
       const n = parsePercent(rateStr);
       if (n <= 50) return 'text-red-400';
@@ -516,6 +516,10 @@
       return '#34d399';
     }
 
+    function rateOver100(rateStr) {
+      return parsePercent(rateStr) > 100;
+    }
+
     function SlackVerticalBarFill({ pct, fill, barW = 12, barH = 36 }) {
       const p = Math.min(100, Math.max(0, pct));
       const bh = (p / 100) * barH;
@@ -555,19 +559,25 @@
       return { pct, fill };
     }
 
-    /** 達成率の数値の右に円グラフ */
+    /** 達成率の数値の右に円グラフ（100%超はドーナツ横に✨） */
     function SlackRateRowWithDonut({ rateStr }) {
       const tone = rateToneClass(rateStr);
+      const sparkle = rateOver100(rateStr);
       return (
         <div className="flex items-center justify-between gap-2 border-b border-slate-800/80 py-1 sm:py-0.5">
           <span className="max-w-[45%] shrink-0 text-xs leading-snug text-slate-400 sm:max-w-[52%] sm:text-[10px] sm:leading-tight">
             達成率
           </span>
-          <div className="flex min-w-0 items-center justify-end gap-1.5">
+          <div className="flex min-w-0 items-center justify-end gap-1">
             <span className={`shrink-0 text-right text-sm font-semibold leading-snug sm:text-[11px] ${tone}`}>
               {rateStr}
             </span>
             <SlackTeamDonut rateStr={rateStr} />
+            {sparkle ? (
+              <span className="shrink-0 text-base leading-none sm:text-sm" title="予算達成率100%超" aria-label="予算達成率100%超">
+                ✨
+              </span>
+            ) : null}
           </div>
         </div>
       );
@@ -636,11 +646,14 @@
     }
 
     function SlackTeamDonut({ rateStr }) {
-      const p = Math.min(100, Math.max(0, parsePercent(rateStr)));
+      const raw = parsePercent(rateStr);
+      const p = Math.min(100, Math.max(0, raw));
       const r = 14;
       const c = 2 * Math.PI * r;
       const dash = (p / 100) * c;
       const color = rateHex(rateStr);
+      const label = Math.round(raw);
+      const fs = raw > 100 ? 7.5 : 9;
       return (
         <svg width="36" height="36" viewBox="0 0 36 36" className="shrink-0" aria-hidden="true">
           <circle cx="18" cy="18" r={r} fill="none" stroke="#334155" strokeWidth="5" />
@@ -655,8 +668,8 @@
             strokeLinecap="round"
             transform="rotate(-90 18 18)"
           />
-          <text x="18" y="19" textAnchor="middle" fontSize="9" fill="#e2e8f0" fontWeight="700">
-            {Math.round(p)}
+          <text x="18" y="19" textAnchor="middle" fontSize={fs} fill="#e2e8f0" fontWeight="700">
+            {label}
           </text>
         </svg>
       );
