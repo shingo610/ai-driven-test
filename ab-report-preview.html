@@ -92,12 +92,12 @@
       '提出課題の構成（①完成形の図解→②4パーツ→③3つのコツ）に合わせて、ページ上の見出し順も整理した。',
     ];
 
-    /** Slack色分け検証用: 10名で達成率・進捗・件数それぞれ赤/黄/緑が揃う例。課全体は10倍閾値で3色が分かれる例。 */
+    /** Slack色分け検証用: 達成率は低〜高・100%ちょうど・100%超までバリエーション付き。進捗・件数の色分け検証も継続。 */
     const slackSampleData = {
       date: '4/4',
       team: {
         es: '32,800千円',
-        rate: '44.0%',
+        rate: '61.3%',
         progress: '+9,200千円',
         reports: '60件',
       },
@@ -105,7 +105,7 @@
         {
           name: 'Aさん',
           es: '2,800千円',
-          rate: '120.0%',
+          rate: '121.5%',
           progress: '+300千円',
           reports: '0件',
           consecutiveZeroReportDays: 6,
@@ -114,7 +114,7 @@
         {
           name: 'Bさん',
           es: '2,600千円',
-          rate: '48.5%',
+          rate: '31.2%',
           progress: '+500千円',
           reports: '3件',
           consecutiveZeroReportDays: 0,
@@ -123,7 +123,7 @@
         {
           name: 'Cさん',
           es: '3,000千円',
-          rate: '50.0%',
+          rate: '44.8%',
           progress: '+750千円',
           reports: '6件',
           consecutiveZeroReportDays: 0,
@@ -132,7 +132,7 @@
         {
           name: 'Dさん',
           es: '2,400千円',
-          rate: '63.2%',
+          rate: '49.6%',
           progress: '+150千円',
           reports: '0件',
           consecutiveZeroReportDays: 4,
@@ -141,7 +141,7 @@
         {
           name: 'Eさん',
           es: '3,300千円',
-          rate: '71.0%',
+          rate: '56.0%',
           progress: '+900千円',
           reports: '4件',
           consecutiveZeroReportDays: 0,
@@ -150,7 +150,7 @@
         {
           name: 'Fさん',
           es: '3,900千円',
-          rate: '88.4%',
+          rate: '68.4%',
           progress: '+1,200千円',
           reports: '9件',
           consecutiveZeroReportDays: 0,
@@ -159,7 +159,7 @@
         {
           name: 'Gさん',
           es: '3,100千円',
-          rate: '100.0%',
+          rate: '81.7%',
           progress: '+400千円',
           reports: '1件',
           consecutiveZeroReportDays: 0,
@@ -168,7 +168,7 @@
         {
           name: 'Hさん',
           es: '3,500千円',
-          rate: '100.0%',
+          rate: '94.2%',
           progress: '+950千円',
           reports: '5件',
           consecutiveZeroReportDays: 0,
@@ -186,7 +186,7 @@
         {
           name: 'Jさん',
           es: '2,700千円',
-          rate: '59.0%',
+          rate: '108.6%',
           progress: '-200千円',
           reports: '5件',
           consecutiveZeroReportDays: 0,
