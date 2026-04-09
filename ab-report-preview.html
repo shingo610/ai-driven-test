@@ -831,14 +831,14 @@
             />
           </div>
           <SlackRateTop5 members={data.members} />
+          <SlackZeroReportStreakAlert members={data.members} />
+          <SlackNoAbProgressChangeAlert members={data.members} />
           <div className="mt-2 text-[10px] font-bold text-sky-300">個人別</div>
           <div className="mt-1 flex flex-col gap-1">
             {data.members.map((m) => (
               <SlackMemberBlock key={m.name} member={m} />
             ))}
           </div>
-          <SlackZeroReportStreakAlert members={data.members} />
-          <SlackNoAbProgressChangeAlert members={data.members} />
           <div className="mt-2 rounded-md bg-slate-900/80 px-2 py-2 text-xs leading-relaxed text-slate-400 sm:py-1.5 sm:text-[10px] sm:leading-snug sm:text-slate-500">
             <div>※A＝契約書手交</div>
             <div>※B＝口頭受注</div>
