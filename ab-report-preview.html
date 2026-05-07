@@ -921,6 +921,43 @@
               description="slackに届く最終表示をスマホ幅で再現しています。流れ図・各数値の右横に達成率ドーナツと進捗・SRの縦棒、フォローが必要なメンバーの抽出まで含みます。"
             >
               <SlackPreview data={slackSampleData} />
+              <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/50 p-4 sm:p-5">
+                <h3 className="text-lg font-bold text-emerald-950 sm:text-base">追加要件（提出用）</h3>
+                <div className="mt-4 space-y-4 text-base leading-relaxed text-slate-700 sm:text-sm">
+                  <section>
+                    <h4 className="font-semibold text-slate-900">1. 報告ツール画面のスクリーンショット</h4>
+                    <p className="mt-1">
+                      上部に、Slackへ自動投稿されたレポート画面のスクリーンショットを掲載しています。
+                      （スマホ幅での表示イメージが分かる構成）
+                    </p>
+                  </section>
+                  <section>
+                    <h4 className="font-semibold text-slate-900">2. 工夫したポイント</h4>
+                    <ul className="mt-2 list-disc space-y-2 pl-5 marker:text-emerald-700">
+                      <li>
+                        <span className="font-semibold">達成率の見せ方：</span>
+                        数字だけだと単調になりやすいため、達成した人を自然に称えられるように
+                        「キラキラ」「花丸」などの演出を加えた
+                      </li>
+                      <li>
+                        <span className="font-semibold">情報配置の工夫：</span>
+                        ランキングや全体グラフを上部に置き、最初に全体状況が分かる構成にした。
+                        「要フォロー」も重要度を踏まえて上位に配置した
+                      </li>
+                      <li>
+                        <span className="font-semibold">ぶつかった課題：</span>
+                        「昨日からの営業進捗」は、実運用では
+                        「契約が入る日」と「数字が動かない日」に波があり、毎日必ず動く指標ではない点
+                      </li>
+                      <li>
+                        <span className="font-semibold">解決方法：</span>
+                        それでも日次進捗を載せる理由を「メンバー同士の動きを見える化し、
+                        チーム全体の行動を促すため」と定義し、比較しやすい表示として残した
+                      </li>
+                    </ul>
+                  </section>
+                </div>
+              </div>
             </SectionCard>
 
             <FourPartsInfographic />
